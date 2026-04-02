@@ -1,0 +1,1116 @@
+@prefix : <https://w3id.org/hi-ontology/scnearios#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix hi: <https://w3id.org/hi-ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix swrla: <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <https://w3id.org/hi-ontology/scnearios#> .
+
+<https://w3id.org/hi-ontology/scnearios#> rdf:type owl:Ontology ;
+                                           dc:description "Conceptual model of Hybrid Intelligence: agents, teams, goals, tasks, capabilities, methods, evaluations, context, and ethical phenomena."@en ;
+                                           dc:license <https://creativecommons.org/licenses/by/4.0/> ;
+                                           dc:title "The Hybrid Intelligence (HI) Ontology"@en ;
+                                           dcterms:created "2025-10-01"^^xsd:date ;
+                                           vann:preferredNamespacePrefix "hi" ;
+                                           vann:preferredNamespaceUri "https://w3id.org/hi-ontology#" ;
+                                           rdfs:comment "Adapted by Grade 10 to include three chosen Scenarios"@en ;
+                                           owl:versionInfo "2.0.0" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/description
+dc:description rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/license
+dc:license rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/title
+dc:title rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/created
+dcterms:created rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/name
+schema:name rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://w3id.org/hi-ontology/scnearios#allowsTask
+:allowsTask rdf:type owl:ObjectProperty ;
+            owl:inverseOf :requiresCapability ;
+            rdf:type owl:AsymmetricProperty ;
+            rdfs:domain :Capability ;
+            rdfs:range :Task ;
+            rdfs:comment "A capability enables or allows a task to be performed."@en ;
+            rdfs:label "allows task" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#evaluatedBy
+:evaluatedBy rdf:type owl:ObjectProperty ;
+             rdfs:domain :TaskExecution ;
+             rdfs:range :Evaluation ;
+             rdfs:comment "Execution is evaluated by a defined evaluation."@en ;
+             rdfs:label "evaluated by" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#executesTask
+:executesTask rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :isAssignedToTask ;
+              rdfs:domain :Agent ;
+              rdfs:range :Task ;
+              owl:propertyChainAxiom ( :performsExecution
+                                       :realizesTask
+                                     ) ;
+              rdfs:comment "Agent executes a task (derivable from Agent→Execution→Task)."@en ;
+              rdfs:label "executes task" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasAgentConcept
+:hasAgentConcept rdf:type owl:ObjectProperty ,
+                          owl:AsymmetricProperty ,
+                          owl:IrreflexiveProperty ;
+                 rdfs:domain :Agent ;
+                 rdfs:range skos:Concept ;
+                 rdfs:comment "Links an agent to a concept in the HINT thesaurus."@en ;
+                 rdfs:label "has agent concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasAgentInvolved
+:hasAgentInvolved rdf:type owl:ObjectProperty ,
+                           owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ;
+                  rdfs:domain :Interaction ;
+                  rdfs:range :Agent ;
+                  rdfs:comment "Indicates an agent that participates in or contributes to an interaction episode. This property identifies the human or artificial agents involved in the exchange."@en ;
+                  rdfs:label "has agent involved" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasCapability
+:hasCapability rdf:type owl:ObjectProperty ,
+                        owl:InverseFunctionalProperty ;
+               rdfs:domain :Agent ;
+               rdfs:range [ rdf:type owl:Class ;
+                            owl:unionOf ( :Capability
+                                          :Task
+                                        )
+                          ] ;
+               rdfs:comment "Agent possesses a capability."@en ;
+               rdfs:label "has capability" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasCapabilityConcept
+:hasCapabilityConcept rdf:type owl:ObjectProperty ,
+                               owl:InverseFunctionalProperty ,
+                               owl:AsymmetricProperty ,
+                               owl:IrreflexiveProperty ;
+                      rdfs:domain :Capability ;
+                      rdfs:range skos:Concept ;
+                      rdfs:comment "Links a capability to a concept in the HINT thesaurus."@en ;
+                      rdfs:label "has capability concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasConstraintConcept
+:hasConstraintConcept rdf:type owl:ObjectProperty ,
+                               owl:AsymmetricProperty ,
+                               owl:IrreflexiveProperty ;
+                      rdfs:domain [ rdf:type owl:Class ;
+                                    owl:unionOf ( :Agent
+                                                  :Context
+                                                  :HITeam
+                                                )
+                                  ] ;
+                      rdfs:range skos:Concept ;
+                      rdfs:comment "Specifies the constraint using a concept in the HINT thesaurus."@en ;
+                      rdfs:label "has constraint concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasContextConcept
+:hasContextConcept rdf:type owl:ObjectProperty ,
+                            owl:AsymmetricProperty ,
+                            owl:IrreflexiveProperty ;
+                   rdfs:domain :Context ;
+                   rdfs:range skos:Concept ;
+                   rdfs:comment "Links a context to a concept in the HINT thesaurus."@en ;
+                   rdfs:label "has context concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasDomainConcept
+:hasDomainConcept rdf:type owl:ObjectProperty ,
+                           owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ;
+                  rdfs:domain :UseCase ;
+                  rdfs:range skos:Concept ;
+                  rdfs:comment "Links a domain to a concept in the HINT thesaurus."@en ;
+                  rdfs:label "has domain concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasEvaluationConcept
+:hasEvaluationConcept rdf:type owl:ObjectProperty ,
+                               owl:AsymmetricProperty ,
+                               owl:IrreflexiveProperty ;
+                      rdfs:domain :Evaluation ;
+                      rdfs:range skos:Concept ;
+                      rdfs:comment "Links an evaluation to a concept in the HINT thesaurus."@en ;
+                      rdfs:label "has evaluation concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasExecutionConcept
+:hasExecutionConcept rdf:type owl:ObjectProperty ,
+                              owl:AsymmetricProperty ,
+                              owl:IrreflexiveProperty ;
+                     rdfs:domain :TaskExecution ;
+                     rdfs:range skos:Concept ;
+                     rdfs:comment "Links an experiment to a concept in the HINT thesaurus."@en ;
+                     rdfs:label "has execution concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasExperiment
+:hasExperiment rdf:type owl:ObjectProperty ,
+                        owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ;
+               rdfs:domain :Evaluation ;
+               rdfs:range :Experiment ;
+               rdfs:comment "An evaluation has an experiment."@en ;
+               rdfs:label "has experiment" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasExperimentConcept
+:hasExperimentConcept rdf:type owl:ObjectProperty ;
+                      rdfs:domain :Experiment ;
+                      rdfs:range skos:Concept ;
+                      rdfs:comment "Links an experiment to a concept in the HINT thesaurus."@en ;
+                      rdfs:label "has experiment concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasGoal
+:hasGoal rdf:type owl:ObjectProperty ,
+                  owl:AsymmetricProperty ,
+                  owl:IrreflexiveProperty ;
+         rdfs:domain :HITeam ;
+         rdfs:range :Goal ;
+         rdfs:comment "An HI team pursues one or more goals."@en ;
+         rdfs:label "has goal" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasGoalConcept
+:hasGoalConcept rdf:type owl:ObjectProperty ;
+                rdfs:domain :Goal ;
+                rdfs:range skos:Concept ;
+                rdfs:comment "Links a goal to a concept in the HINT thesaurus."@en ;
+                rdfs:label "has goal concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasHITeam
+:hasHITeam rdf:type owl:ObjectProperty ;
+           rdfs:domain :UseCase ;
+           rdfs:range :HITeam ;
+           rdfs:comment "A use case introduces a hybrid intelligence team."@en ;
+           rdfs:label "has HI team" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasInfluenceOn
+:hasInfluenceOn rdf:type owl:ObjectProperty ;
+                owl:inverseOf :isInfluencedBy ;
+                rdfs:domain :Context ;
+                rdfs:range :HITeam ;
+                rdfs:comment "Relates a contextual condition to the HI team whose actions, collaboration dynamics, or task performance are influenced by that condition. It captures how background phenomena and constraints shape the team's operation in a given use case."@en ;
+                rdfs:label "has influence on" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasInteractionEpisode
+:hasInteractionEpisode rdf:type owl:ObjectProperty ;
+                       rdfs:domain :TaskExecution ;
+                       rdfs:range :Interaction ;
+                       rdfs:comment "Identifies moments of interaction (e.g., dialogue, negotiation, or guidance) that unfold within the execution of a task."@en ;
+                       rdfs:label "has interaction episode" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasInteractionIntentConcept
+:hasInteractionIntentConcept rdf:type owl:ObjectProperty ;
+                             rdfs:domain :Interaction ;
+                             rdfs:range skos:Concept ;
+                             rdfs:comment "Intent underlying the interaction (e.g., explain, request, negotiate)."@en ;
+                             rdfs:label "has interaction intent concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasInteractionModalityConcept
+:hasInteractionModalityConcept rdf:type owl:ObjectProperty ,
+                                        owl:AsymmetricProperty ,
+                                        owl:IrreflexiveProperty ;
+                               rdfs:domain :Interaction ;
+                               rdfs:range skos:Concept ;
+                               rdfs:comment "Modality/channel used during the interaction."@en ;
+                               rdfs:label "has interaction modality concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasMember
+:hasMember rdf:type owl:ObjectProperty ,
+                    owl:InverseFunctionalProperty ,
+                    owl:AsymmetricProperty ,
+                    owl:IrreflexiveProperty ;
+           rdfs:domain :HITeam ;
+           rdfs:range :Agent ;
+           rdfs:comment "Specifies agents that are members of an HI team."@en ;
+           rdfs:label "has member" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasMethodConcept
+:hasMethodConcept rdf:type owl:ObjectProperty ,
+                           owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ;
+                  rdfs:domain :TaskExecution ;
+                  rdfs:range skos:Concept ;
+                  rdfs:comment "Links a task execution to a method in the HINT thesaurus."@en ;
+                  rdfs:label "has method concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasMetricConcept
+:hasMetricConcept rdf:type owl:ObjectProperty ;
+                  rdfs:domain :Evaluation ;
+                  rdfs:range skos:Concept ;
+                  rdfs:comment "An evaluation uses certain metrics, defined in the HINT thesaurus"@en ;
+                  rdfs:label "has metric concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasMetricTested
+:hasMetricTested rdf:type owl:ObjectProperty ,
+                          owl:AsymmetricProperty ,
+                          owl:IrreflexiveProperty ;
+                 rdfs:domain :Experiment ;
+                 rdfs:range skos:Concept ;
+                 rdfs:comment "An experiment tests certain metrics, defined in the HINT thesaurus"@en ;
+                 rdfs:label "has metric tested" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasPersonalRole
+:hasPersonalRole rdf:type owl:ObjectProperty ,
+                          owl:AsymmetricProperty ;
+                 rdfs:domain [ rdf:type owl:Class ;
+                               owl:unionOf ( foaf:Person
+                                             :Agent
+                                           )
+                             ] ;
+                 rdfs:range [ rdf:type owl:Class ;
+                              owl:unionOf ( foaf:Person
+                                            :Agent
+                                          )
+                            ] .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasPhenomenonConcept
+:hasPhenomenonConcept rdf:type owl:ObjectProperty ;
+                      rdfs:domain [ rdf:type owl:Class ;
+                                    owl:unionOf ( :Agent
+                                                  :Context
+                                                  :HITeam
+                                                )
+                                  ] ;
+                      rdfs:range skos:Concept ;
+                      rdfs:comment "Context exhibits a phenomenon (e.g., bias/feedback emerges in that context)."@en ;
+                      rdfs:label "has phenomenon concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasRoleConcept
+:hasRoleConcept rdf:type owl:ObjectProperty ,
+                         owl:AsymmetricProperty ,
+                         owl:IrreflexiveProperty ;
+                rdfs:domain :Agent ;
+                rdfs:range skos:Concept ;
+                rdfs:comment "Links a role to a concept in the HINT thesaurus."@en ;
+                rdfs:label "has role concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasTaskConcept
+:hasTaskConcept rdf:type owl:ObjectProperty ,
+                         owl:AsymmetricProperty ,
+                         owl:IrreflexiveProperty ;
+                rdfs:domain :Task ;
+                rdfs:range skos:Concept ;
+                rdfs:comment "Links a task to a concept in the HINT thesaurus."@en ;
+                rdfs:label "has task concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasTrustIn
+:hasTrustIn rdf:type owl:ObjectProperty ,
+                     owl:InverseFunctionalProperty ,
+                     owl:AsymmetricProperty ;
+            rdfs:domain [ rdf:type owl:Class ;
+                          owl:unionOf ( foaf:Person
+                                        :Agent
+                                      )
+                        ] ;
+            rdfs:range [ rdf:type owl:Class ;
+                         owl:unionOf ( :Agent
+                                       :Capability
+                                       :Experiment
+                                     )
+                       ] .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasUseCaseConcept
+:hasUseCaseConcept rdf:type owl:ObjectProperty ;
+                   rdfs:domain :UseCase ;
+                   rdfs:range skos:Concept ;
+                   rdfs:comment "Links a use case to a concept in the HINT thesaurus."@en ;
+                   rdfs:label "has use case concept" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#involves
+:involves rdf:type owl:ObjectProperty ;
+          rdfs:domain :HITeam ;
+          rdfs:range :Agent ;
+          owl:propertyDisjointWith :isInvolvedWith .
+
+
+###  https://w3id.org/hi-ontology/scnearios#isAssignedToTask
+:isAssignedToTask rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :isEligibleForTask ;
+                  rdfs:domain :Agent ;
+                  rdfs:range :Task ;
+                  owl:propertyChainAxiom ( :performsExecution
+                                           :realizesTask
+                                         ) ;
+                  rdfs:comment "Relates an agent to a task that it is formally assigned to perform. Every assignment implies that the agent is eligible for that task."@en ;
+                  rdfs:label "is assigned to task" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#isEligibleForTask
+:isEligibleForTask rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Agent ;
+                   rdfs:range :Task ;
+                   owl:propertyChainAxiom ( :hasCapability
+                                            :allowsTask
+                                          ) ;
+                   rdfs:comment "Relates an agent to a task it is eligible to perform, based on their capabilities. Assignment is a stricter, policy-level decision that presupposes eligibility."@en ;
+                   rdfs:label "is eligible for task" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#isInfluencedBy
+:isInfluencedBy rdf:type owl:ObjectProperty ;
+                rdfs:domain :HITeam ;
+                rdfs:range :Context ;
+                rdfs:comment "Related a HI Team to the contextual condition that affects its actions, collaboration dynamics, or task performance."@en ;
+                rdfs:label "is influenced by" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#isInvolvedWith
+:isInvolvedWith rdf:type owl:ObjectProperty ;
+                rdfs:domain :HITeam .
+
+
+###  https://w3id.org/hi-ontology/scnearios#operatesInContext
+:operatesInContext rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Agent ;
+                   rdfs:range :Context ;
+                   rdfs:comment "Specifies the context in which an HI team operates."@en ;
+                   rdfs:label "operates in context" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#performedBy
+:performedBy rdf:type owl:ObjectProperty ;
+             owl:inverseOf :performsExecution ;
+             rdf:type owl:AsymmetricProperty ,
+                      owl:IrreflexiveProperty ;
+             rdfs:domain [ rdf:type owl:Class ;
+                           owl:unionOf ( :TaskExecution
+                                       )
+                         ] ;
+             rdfs:range :Agent ;
+             rdfs:comment "Execution performed by an agent."@en ;
+             rdfs:label "performed by" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#performsExecution
+:performsExecution rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Agent ;
+                   rdfs:range :TaskExecution ;
+                   rdfs:comment "Agent that performs a specific task execution."@en ;
+                   rdfs:label "performs execution" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#realizedBy
+:realizedBy rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf :performsExecution ;
+            owl:inverseOf :realizesTask ;
+            rdfs:domain :Task ;
+            rdfs:range :TaskExecution ;
+            rdfs:comment "A task is realized through a task execution."@en ;
+            rdfs:label "realized by" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#realizesTask
+:realizesTask rdf:type owl:ObjectProperty ;
+              rdfs:domain :TaskExecution ;
+              rdfs:range :Task ;
+              rdfs:comment "Task execution realizes a task."@en ;
+              rdfs:label "realizes task" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#requiresCapability
+:requiresCapability rdf:type owl:ObjectProperty ,
+                             owl:AsymmetricProperty ,
+                             owl:IrreflexiveProperty ;
+                    rdfs:domain :Task ;
+                    rdfs:range :Capability ;
+                    rdfs:comment "A task requires certain capabilities to be accomplished."@en ;
+                    rdfs:label "requires capability" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#requiresData
+:requiresData rdf:type owl:ObjectProperty ,
+                       owl:TransitiveProperty ;
+              rdfs:domain :Agent ;
+              rdfs:range :Information .
+
+
+###  https://w3id.org/hi-ontology/scnearios#requiresTask
+:requiresTask rdf:type owl:ObjectProperty ;
+              rdfs:domain :Goal ;
+              rdfs:range :Task ;
+              rdfs:comment "A goal requires one or more tasks to be fulfilled."@en ;
+              rdfs:label "has task" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#towardsGoal
+:towardsGoal rdf:type owl:ObjectProperty ;
+             rdfs:domain :TaskExecution ;
+             rdfs:range :Goal ;
+             rdfs:comment "Task execution towards a goal."@en ;
+             rdfs:label "towards goal" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  https://w3id.org/hi-ontology/scnearios#hasAlternativeHypothesis
+:hasAlternativeHypothesis rdf:type owl:DatatypeProperty ;
+                          rdfs:domain :Experiment ;
+                          rdfs:range xsd:string ;
+                          rdfs:comment "Stores the textual formulation of the alternative hypothesis of an experiment."@en ;
+                          rdfs:label "has alternative hypothesis"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#hasNullHypothesis
+:hasNullHypothesis rdf:type owl:DatatypeProperty ;
+                   rdfs:domain :Experiment ;
+                   rdfs:range xsd:string ;
+                   rdfs:comment "Stores the textual formulation of the null hypothesis of an experiment."@en ;
+                   rdfs:label "has null hypothesis"@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://schema.org/Organization
+schema:Organization rdf:type owl:Class ;
+                    rdfs:comment "A Schema.org class representing an organization such as an institution, company, or group."@en ;
+                    rdfs:label "Organization"@en .
+
+
+###  http://schema.org/PropertyValue
+schema:PropertyValue rdf:type owl:Class ;
+                     rdfs:comment "A Schema.org class representing a specific property-value pair, often used for metadata or structured descriptions."@en ;
+                     rdfs:label "Property Value"@en .
+
+
+###  http://www.w3.org/2004/02/skos/core#Concept
+skos:Concept rdf:type owl:Class ;
+             rdfs:comment "A SKOS concept representing a unit of thought, used for controlled vocabularies and thesauri."@en ;
+             rdfs:label "Concept"@en .
+
+
+###  http://xmlns.com/foaf/0.1/Person
+foaf:Person rdf:type owl:Class ;
+            rdfs:comment "A human individual described using the FOAF vocabulary. Represents natural persons who may participate in, interact with, or be modeled within a Hybrid Intelligence scenario."@en ;
+            rdfs:label "Person"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Agent
+:Agent rdf:type owl:Class ;
+       rdfs:comment "An autonomous entity capable of having roles, goals, and capabilities within a hybrid intelligence system."@en ;
+       rdfs:label "Agent"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ArtificialAgent
+:ArtificialAgent rdf:type owl:Class ;
+                 rdfs:subClassOf :Agent ;
+                 owl:disjointWith :HumanAgent ;
+                 rdfs:comment "An artificial or computational agent (robot, software, etc.) collaborating with human agents."@en ;
+                 rdfs:label "Artificial Agent"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Capability
+:Capability rdf:type owl:Class ;
+            rdfs:comment "A skill, competence, or functional capacity that allows an agent to perform or enable a task."@en ;
+            rdfs:label "Capability"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ChildWithReadingDifficulties
+:ChildWithReadingDifficulties rdf:type owl:Class ;
+                              rdfs:subClassOf foaf:Person .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Context
+:Context rdf:type owl:Class ;
+         rdfs:comment "Situational conditions (environmental, cultural, cognitive) under which tasks and evaluations occur."@en ;
+         rdfs:label "Context"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Data
+:Data rdf:type owl:Class ;
+      rdfs:subClassOf :Information .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Evaluation
+:Evaluation rdf:type owl:Class ;
+            rdfs:comment "A process of assessing the quality or outcome of executions, methods, or goals."@en ;
+            rdfs:label "Evaluation"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Experiment
+:Experiment rdf:type owl:Class ;
+            rdfs:comment "An empirical setup linked to an evaluation that tests metrics and hypotheses."@en ;
+            rdfs:label "Experiment"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Goal
+:Goal rdf:type owl:Class ;
+      rdfs:subClassOf [ rdf:type owl:Restriction ;
+                        owl:onProperty :requiresTask ;
+                        owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onClass :Task
+                      ] ;
+      rdfs:comment "A desired outcome pursued by an HI team, requiring one or more tasks to be completed."@en ;
+      rdfs:label "Goal"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#HITeam
+:HITeam rdf:type owl:Class ;
+        rdfs:subClassOf [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasMember ;
+                          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onClass :ArtificialAgent
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :hasMember ;
+                          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onClass :HumanAgent
+                        ] ;
+        rdfs:comment "A hybrid intelligence team composed of human and artificial agents pursuing a shared goal."@en ;
+        rdfs:label "HI Team"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#HumanAgent
+:HumanAgent rdf:type owl:Class ;
+            rdfs:subClassOf foaf:Person ,
+                            :Agent ;
+            rdfs:comment "A human participant in the hybrid intelligence system, possessing cognitive and perceptual abilities."@en ;
+            rdfs:label "Human Agent"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Information
+:Information rdf:type owl:Class .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Interaction
+:Interaction rdf:type owl:Class ;
+             rdfs:subClassOf [ rdf:type owl:Restriction ;
+                               owl:onProperty :hasAgentInvolved ;
+                               owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                               owl:onClass :Agent
+                             ] ;
+             rdfs:comment "A multi-agent task execution where two or more agents coordinate (verbal, symbolic, or physical) toward a goal."@en ;
+             rdfs:label "Interaction"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Neuroscientist
+:Neuroscientist rdf:type owl:Class ;
+                rdfs:subClassOf foaf:Person .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Task
+:Task rdf:type owl:Class ;
+      rdfs:subClassOf [ rdf:type owl:Restriction ;
+                        owl:onProperty :requiresCapability ;
+                        owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onClass :Capability
+                      ] ;
+      rdfs:comment "A unit of purposeful activity executed by an agent toward achieving a goal."@en ;
+      rdfs:label "Task"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#TaskExecution
+:TaskExecution rdf:type owl:Class ;
+               rdfs:comment "The realization or performance of a specific task by an agent using a method."@en ;
+               rdfs:label "Task Execution"@en .
+
+
+###  https://w3id.org/hi-ontology/scnearios#UseCase
+:UseCase rdf:type owl:Class ;
+         rdfs:comment "A structured situation describing a specific hybrid intelligence scenario (previously 'Scenario')."@en ;
+         rdfs:label "Use Case"@en .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://w3id.org/hi-ontology/scnearios#AIAutonomy
+:AIAutonomy rdf:type owl:NamedIndividual ;
+            :hasInfluenceOn :DelegationOfDataAnalysis ,
+                            :ScientistFocusOnStrategicTasks ;
+            rdfs:comment "Scenario 3: Context phenomenon." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#AIVirtualAgent
+:AIVirtualAgent rdf:type owl:NamedIndividual ,
+                         :ArtificialAgent ;
+                :hasRoleConcept :DataMiningAndPatternRecognition ,
+                                :ProactiveResearchSuggestion ;
+                :isAssignedToTask :DataAnalysisProcess ;
+                :isEligibleForTask :GeneticMarkerExploration ,
+                                   :ProactiveResearchSuggestion .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Alex
+:Alex rdf:type owl:NamedIndividual ,
+               :ChildWithReadingDifficulties ;
+      rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#AlphaFold
+:AlphaFold rdf:type owl:NamedIndividual ,
+                    :ArtificialAgent ;
+           :isEligibleForTask :ProteinStructurePrediction ;
+           rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#AlphaFoldAssistance
+:AlphaFoldAssistance rdf:type owl:NamedIndividual ;
+                     :hasExecutionConcept :ReducedProteinFoldingTime ;
+                     rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#AlphaFoldIntegration
+:AlphaFoldIntegration rdf:type owl:NamedIndividual ;
+                      rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#AlphaFoldLimitations
+:AlphaFoldLimitations rdf:type owl:NamedIndividual ;
+                      :allowsTask :EarlierExperimentSubmission ;
+                      rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#AssistiveRobot
+:AssistiveRobot rdf:type owl:NamedIndividual ,
+                         :ArtificialAgent ;
+                :hasConstraintConcept :EthicalAndEmotionalContext ;
+                :isEligibleForTask :AutomatedAssessment ,
+                                   :ReadingWritingAssessment ;
+                :requiresData :LargeTrainingDataset ;
+                rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#AutomatedAssessment
+:AutomatedAssessment rdf:type owl:NamedIndividual ;
+                     rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ClearRoleDefinition
+:ClearRoleDefinition rdf:type owl:NamedIndividual ;
+                     :hasInfluenceOn :EfficientTaskDistribution ,
+                                     :IncreasedAccountability ;
+                     rdfs:comment "Scenario 3: Context phenomenon." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#DataAnalysisProcess
+:DataAnalysisProcess rdf:type owl:NamedIndividual ,
+                              :Task ;
+                     rdfs:comment "Scenario 3: Data analysis task requiring the AIVirtualAgent." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#DataMiningAndPatternRecognition
+:DataMiningAndPatternRecognition rdf:type owl:NamedIndividual ,
+                                          skos:Concept ;
+                                 rdfs:comment "Scenario 3: Role concept of the AIVirtualAgent." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#DelegationOfDataAnalysis
+:DelegationOfDataAnalysis rdf:type owl:NamedIndividual ;
+                          rdfs:comment "Scenario 3: Effect caused by AIAutonomy." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#DiagnosisAndMonitoring
+:DiagnosisAndMonitoring rdf:type owl:NamedIndividual ,
+                                 :Task ;
+                        rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#DrChenResearchTeam
+:DrChenResearchTeam rdf:type owl:NamedIndividual ,
+                             :HITeam ;
+                    :hasMember :DrEmilyChen ,
+                               :ITResearchSupportStaff ;
+                    :hasPhenomenonConcept :WeeklyMeeting ;
+                    :involves :AlphaFold ,
+                              :LargeLanguageModel ;
+                    rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#DrEmilyChen
+:DrEmilyChen rdf:type owl:NamedIndividual ,
+                      :Neuroscientist ;
+             :hasConstraintConcept :AlphaFoldLimitations ;
+             :hasPersonalRole :TeamLead ;
+             :hasTrustIn :AlphaFold ;
+             rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#EarlierExperimentSubmission
+:EarlierExperimentSubmission rdf:type owl:NamedIndividual ;
+                             rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#EducationalTherapist
+:EducationalTherapist rdf:type owl:NamedIndividual ,
+                               :HumanAgent ;
+                      :hasCapability :ProgressEvaluation ;
+                      rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#EfficiencyAndAccuracy
+:EfficiencyAndAccuracy rdf:type owl:NamedIndividual ;
+                       rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#EfficientTaskDistribution
+:EfficientTaskDistribution rdf:type owl:NamedIndividual ;
+                           rdfs:comment "Scenario 3: Outcome of ClearRoleDefinition." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#EthicalAndEmotionalContext
+:EthicalAndEmotionalContext rdf:type owl:NamedIndividual ,
+                                     skos:Concept ;
+                            rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ExceededProjectGoals
+:ExceededProjectGoals rdf:type owl:NamedIndividual ;
+                      :hasInfluenceOn :HighStakeholderSatisfaction ;
+                      rdfs:comment "Scenario 3: Overall project outcome." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#GeneticMarkerExploration
+:GeneticMarkerExploration rdf:type owl:NamedIndividual ,
+                                   :Task ;
+                          rdfs:comment "Scenario 3: Task involved in NeurodegenerationResearch." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#GroundbreakingDiscoveries
+:GroundbreakingDiscoveries rdf:type owl:NamedIndividual ;
+                           rdfs:comment "Scenario 3: Outcome of SkillsComplementarity." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#HITLCollaboration
+:HITLCollaboration rdf:type owl:NamedIndividual ,
+                            :Interaction ;
+                   :hasGoal :ImprovedReadingOutcome ;
+                   :requiresCapability :EfficiencyAndAccuracy ,
+                                       :WellbeingAndEthicalAlignment ;
+                   rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#HighStakeholderSatisfaction
+:HighStakeholderSatisfaction rdf:type owl:NamedIndividual ;
+                             rdfs:comment "Scenario 3: Outcome of ExceededProjectGoals." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#HighTeamTransparency
+:HighTeamTransparency rdf:type owl:NamedIndividual ;
+                      :hasInfluenceOn :IncreasedMemberAutonomy ;
+                      rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#HumanAITeam
+:HumanAITeam rdf:type owl:NamedIndividual ,
+                      :HITeam ;
+             :hasGoal :NovelTherapeuticTargetIdentification ;
+             :involves :AIVirtualAgent ,
+                       :Scientist ;
+             :isInvolvedWith :RealTimeCommunicationTools ;
+             rdfs:comment "Scenario 3: HI Comp 2024 Neurodegen Research Team." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#HumanAITeamForAlex
+:HumanAITeamForAlex rdf:type owl:NamedIndividual ,
+                             :HITeam ;
+                    :hasGoal :TargetedLearningSolution ;
+                    :hasMember :AssistiveRobot ,
+                               :EducationalTherapist ,
+                               :RemedialTeacher ;
+                    rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#HumanDiagnosis
+:HumanDiagnosis rdf:type owl:NamedIndividual ;
+                :towardsGoal :ProgressMonitoring ;
+                rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ITResearchSupportStaff
+:ITResearchSupportStaff rdf:type owl:NamedIndividual ,
+                                 :HumanAgent ;
+                        :hasPersonalRole :SystemOptimisationSupport ;
+                        rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ImprovedReadingOutcome
+:ImprovedReadingOutcome rdf:type owl:NamedIndividual ;
+                        rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#IncreasedAccountability
+:IncreasedAccountability rdf:type owl:NamedIndividual ;
+                         rdfs:comment "Scenario 3: Outcome of ClearRoleDefinition." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#IncreasedMemberAutonomy
+:IncreasedMemberAutonomy rdf:type owl:NamedIndividual ;
+                         rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#LargeLanguageModel
+:LargeLanguageModel rdf:type owl:NamedIndividual ,
+                             :ArtificialAgent ;
+                    :isEligibleForTask :LiteratureSummarisation ;
+                    rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#LargeTrainingDataset
+:LargeTrainingDataset rdf:type owl:NamedIndividual ,
+                               :Data ;
+                      rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#LiteratureSummarisation
+:LiteratureSummarisation rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/scnearios#NeurodegenerationResearch
+:NeurodegenerationResearch rdf:type owl:NamedIndividual ,
+                                    :UseCase ;
+                           :hasDomainConcept :NovelTherapeuticTarget ;
+                           :hasHITeam :HumanAITeam ;
+                           rdfs:comment "Scenario 3: Research use-case." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#NewLabSensor
+:NewLabSensor rdf:type owl:NamedIndividual ;
+              :hasInfluenceOn :DrChenResearchTeam ;
+              :requiresCapability :AlphaFoldIntegration .
+
+
+###  https://w3id.org/hi-ontology/scnearios#NewResearchAvenues
+:NewResearchAvenues rdf:type owl:NamedIndividual ;
+                    rdfs:comment "Scenario 3: Outcome of ProactiveResearchSuggestion." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#NovelTherapeuticTarget
+:NovelTherapeuticTarget rdf:type owl:NamedIndividual ,
+                                 skos:Concept ;
+                        rdfs:comment "Scenario 3: Research output; domain concept of NeurodegenerationResearch." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#NovelTherapeuticTargetIdentification
+:NovelTherapeuticTargetIdentification rdf:type owl:NamedIndividual ,
+                                               :Goal ;
+                                      :hasInfluenceOn :ScientificPublications ;
+                                      rdfs:comment "Scenario 3: Goal of the HumanAITeam." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ObjectivesAndNormsTransparency
+:ObjectivesAndNormsTransparency rdf:type owl:NamedIndividual ;
+                                :hasInfluenceOn :TeamCohesionAndFocus ;
+                                rdfs:comment "Scenario 3: Context phenomenon." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ProactiveResearchSuggestion
+:ProactiveResearchSuggestion rdf:type owl:NamedIndividual ,
+                                      skos:Concept ,
+                                      :Task ;
+                             :hasInfluenceOn :NewResearchAvenues ;
+                             rdfs:comment "Scenario 3: Role/capability of AIVirtualAgent; also a task." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ProcessOptimisation
+:ProcessOptimisation rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ProgressEvaluation
+:ProgressEvaluation rdf:type owl:NamedIndividual ,
+                             :Task ;
+                    rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ProgressMonitoring
+:ProgressMonitoring rdf:type owl:NamedIndividual ,
+                             :Goal ;
+                    rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ProteinFoldingTask
+:ProteinFoldingTask rdf:type owl:NamedIndividual ;
+                    :hasAgentInvolved :AlphaFold .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ProteinStructurePrediction
+:ProteinStructurePrediction rdf:type owl:NamedIndividual ;
+                            rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ReadingWritingAssessment
+:ReadingWritingAssessment rdf:type owl:NamedIndividual ,
+                                   :Task ;
+                          rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#RealTimeCommunicationTools
+:RealTimeCommunicationTools rdf:type owl:NamedIndividual ;
+                            :hasInfluenceOn :SwiftInformedDecisions ;
+                            :requiresCapability :RobustProtocols ;
+                            rdfs:comment "Scenario 3: Tool that is part of the HumanAITeam." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ReducedProteinFoldingTime
+:ReducedProteinFoldingTime rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/scnearios#RemedialTeacher
+:RemedialTeacher rdf:type owl:NamedIndividual ,
+                          :HumanAgent ;
+                 :hasCapability :DiagnosisAndMonitoring ;
+                 :performsExecution :HumanDiagnosis ;
+                 rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#RobustProtocols
+:RobustProtocols rdf:type owl:NamedIndividual ,
+                          :Capability ;
+                 rdfs:comment "Scenario 3: Required capability for RealTimeCommunicationTools." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ScientificPublications
+:ScientificPublications rdf:type owl:NamedIndividual ;
+                        rdfs:comment "Scenario 3: Outcome of NovelTherapeuticTargetIdentification." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Scientist
+:Scientist rdf:type owl:NamedIndividual ,
+                    :HumanAgent ;
+           :hasRoleConcept :StrategicDecisionAndBioValidation ;
+           :hasTrustIn :AIVirtualAgent .
+
+
+###  https://w3id.org/hi-ontology/scnearios#ScientistFocusOnStrategicTasks
+:ScientistFocusOnStrategicTasks rdf:type owl:NamedIndividual ;
+                                rdfs:comment "Scenario 3: Outcome of AIAutonomy." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#SkillsComplementarity
+:SkillsComplementarity rdf:type owl:NamedIndividual ;
+                       :hasInfluenceOn :GroundbreakingDiscoveries ;
+                       rdfs:comment "Scenario 3: Context phenomenon." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#Stakeholders
+:Stakeholders rdf:type owl:NamedIndividual ,
+                       :HITeam ;
+              :involves :Scientist ;
+              rdfs:comment "Scenario 3: Stakeholders group involving the Scientist." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#StrategicDecisionAndBioValidation
+:StrategicDecisionAndBioValidation rdf:type owl:NamedIndividual ,
+                                            skos:Concept ;
+                                   rdfs:comment "Scenario 3: Role concept of the Scientist." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#SwiftInformedDecisions
+:SwiftInformedDecisions rdf:type owl:NamedIndividual ;
+                        rdfs:comment "Scenario 3: Outcome of RealTimeCommunicationTools." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#SystemOptimisationSupport
+:SystemOptimisationSupport rdf:type owl:NamedIndividual ;
+                           rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#TargetedLearningSolution
+:TargetedLearningSolution rdf:type owl:NamedIndividual ;
+                          :hasHITeam :HumanAITeamForAlex ;
+                          :hasInteractionEpisode :HITLCollaboration ;
+                          rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#TeamCohesionAndFocus
+:TeamCohesionAndFocus rdf:type owl:NamedIndividual ;
+                      rdfs:comment "Scenario 3: Outcome of ObjectivesAndNormsTransparency." .
+
+
+###  https://w3id.org/hi-ontology/scnearios#TeamLead
+:TeamLead rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/scnearios#WeeklyMeeting
+:WeeklyMeeting rdf:type owl:NamedIndividual ;
+               :hasGoal :ProcessOptimisation ;
+               rdfs:comment "Scenario 2: HI Comp @ AAMAS 2024 Team MarkBaz Best Case" .
+
+
+###  https://w3id.org/hi-ontology/scnearios#WellbeingAndEthicalAlignment
+:WellbeingAndEthicalAlignment rdf:type owl:NamedIndividual ;
+                              rdfs:comment "Scenario 1: HI Comp @ HHAI 2024 Team HHAI team Best Case" .
+
+
+[ rdf:type schema:Organization ;
+  schema:name "Knowledge in AI (KAI) Group - Vrije Universiteit Amsterdam"
+] .
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
