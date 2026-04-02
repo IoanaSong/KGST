@@ -1,0 +1,1964 @@
+@prefix : <https://w3id.org/hi-ontology/grade10#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix hi: <https://w3id.org/hi-ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix swrla: <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <https://w3id.org/hi-ontology/grade10#> .
+
+<https://w3id.org/hi-ontology/grade10#> rdf:type owl:Ontology ;
+                                         dc:description "Conceptual model of Hybrid Intelligence: agents, teams, goals, tasks, capabilities, methods, evaluations, context, and ethical phenomena."@en ;
+                                         dc:license <https://creativecommons.org/licenses/by/4.0/> ;
+                                         dc:title "The Hybrid Intelligence (HI) Ontology"@en ;
+                                         dcterms:created "2025-10-01"^^xsd:date ;
+                                         vann:preferredNamespacePrefix "hi" ;
+                                         vann:preferredNamespaceUri "https://w3id.org/hi-ontology#" ;
+                                         rdfs:comment "Adapted by Grade 10 (Ioana Song and Kim Lichtenberg)"@en ;
+                                         owl:versionInfo "2.0.0" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/description
+dc:description rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/license
+dc:license rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/title
+dc:title rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/created
+dcterms:created rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
+
+
+###  http://schema.org/name
+schema:name rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#closeMatch
+skos:closeMatch rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#exactMatch
+skos:exactMatch rdf:type owl:AnnotationProperty ;
+                rdfs:subPropertyOf rdfs:seeAlso .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://w3id.org/hi-ontology#adaptsTo
+hi:adaptsTo rdf:type owl:ObjectProperty ,
+                     owl:AsymmetricProperty ,
+                     owl:IrreflexiveProperty ;
+            rdfs:domain hi:EventAspect ,
+                        [ rdf:type owl:Class ;
+                          owl:unionOf ( foaf:Person
+                                        hi:Agent
+                                      )
+                        ] ;
+            rdfs:range hi:Event .
+
+
+###  https://w3id.org/hi-ontology#allowsTask
+hi:allowsTask rdf:type owl:ObjectProperty ;
+              owl:inverseOf hi:requiresCapability ;
+              rdf:type owl:AsymmetricProperty ;
+              rdfs:domain hi:Capability ;
+              rdfs:range hi:Task ;
+              rdfs:comment "A capability enables or allows a task to be performed."@en .
+
+
+###  https://w3id.org/hi-ontology#annotatedComplementingBy
+hi:annotatedComplementingBy rdf:type owl:ObjectProperty ,
+                                     owl:AsymmetricProperty ;
+                            rdfs:domain hi:EventAspect ;
+                            rdfs:range hi:Annotator .
+
+
+###  https://w3id.org/hi-ontology#annotatedComplementingWith
+hi:annotatedComplementingWith rdf:type owl:ObjectProperty ,
+                                       owl:SymmetricProperty ;
+                              rdfs:domain hi:EventAspect ;
+                              rdfs:range hi:EventAspect .
+
+
+###  https://w3id.org/hi-ontology#annotatedConflictedBy
+hi:annotatedConflictedBy rdf:type owl:ObjectProperty ,
+                                  owl:AsymmetricProperty ;
+                         rdfs:domain hi:EventAspect ;
+                         rdfs:range hi:Annotator .
+
+
+###  https://w3id.org/hi-ontology#annotatedConflictingWith
+hi:annotatedConflictingWith rdf:type owl:ObjectProperty ,
+                                     owl:SymmetricProperty ,
+                                     owl:IrreflexiveProperty ;
+                            rdfs:domain hi:EventAspect ;
+                            rdfs:range hi:EventAspect .
+
+
+###  https://w3id.org/hi-ontology#annotatedOverlappingBy
+hi:annotatedOverlappingBy rdf:type owl:ObjectProperty ,
+                                   owl:AsymmetricProperty ;
+                          rdfs:domain hi:EventAspect ;
+                          rdfs:range hi:Annotator .
+
+
+###  https://w3id.org/hi-ontology#annotatedOverlappingWith
+hi:annotatedOverlappingWith rdf:type owl:ObjectProperty ,
+                                     owl:SymmetricProperty ,
+                                     owl:TransitiveProperty ;
+                            rdfs:domain hi:EventAspect ;
+                            rdfs:range hi:EventAspect .
+
+
+###  https://w3id.org/hi-ontology#appliedTo
+hi:appliedTo rdf:type owl:ObjectProperty ,
+                      owl:AsymmetricProperty ,
+                      owl:IrreflexiveProperty ;
+             rdfs:domain <https://www.wikidata.org/wiki/Q2695280> ;
+             rdfs:range hi:Task ;
+             rdfs:comment "Indicates that a method is applied to solve or address a specific task."@en ;
+             rdfs:label "appliedTo"@en .
+
+
+###  https://w3id.org/hi-ontology#askInfoTo
+hi:askInfoTo rdf:type owl:ObjectProperty ,
+                      owl:IrreflexiveProperty ;
+             rdfs:domain hi:Agent ;
+             rdfs:range hi:Human .
+
+
+###  https://w3id.org/hi-ontology#asksJudgementAbout
+hi:asksJudgementAbout rdf:type owl:ObjectProperty ,
+                               owl:AsymmetricProperty ,
+                               owl:IrreflexiveProperty ;
+                      rdfs:domain hi:Agent ;
+                      rdfs:range hi:PossibleConflictingEvent .
+
+
+###  https://w3id.org/hi-ontology#canInfer
+hi:canInfer rdf:type owl:ObjectProperty ,
+                     owl:AsymmetricProperty ;
+            rdfs:domain <https://www.wikidata.org/wiki/Q1122506> ;
+            rdfs:range skos:Concept .
+
+
+###  https://w3id.org/hi-ontology#collaboratesWith
+hi:collaboratesWith rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf owl:topObjectProperty ;
+                    rdf:type owl:SymmetricProperty ;
+                    rdfs:domain [ rdf:type owl:Class ;
+                                  owl:unionOf ( foaf:Person
+                                                hi:Agent
+                                              )
+                                ] ;
+                    rdfs:range [ rdf:type owl:Class ;
+                                 owl:unionOf ( foaf:Person
+                                               hi:Agent
+                                             )
+                               ] .
+
+
+###  https://w3id.org/hi-ontology#comprises
+hi:comprises rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf owl:topObjectProperty ;
+             rdf:type owl:InverseFunctionalProperty ,
+                      owl:AsymmetricProperty ;
+             rdfs:domain hi:Event ;
+             rdfs:range hi:EventAspect .
+
+
+###  https://w3id.org/hi-ontology#conflictsWith
+hi:conflictsWith rdf:type owl:ObjectProperty ,
+                          owl:SymmetricProperty ,
+                          owl:IrreflexiveProperty ;
+                 rdfs:domain hi:EventAspect ;
+                 rdfs:range hi:EventAspect .
+
+
+###  https://w3id.org/hi-ontology#defines
+hi:defines rdf:type owl:ObjectProperty ,
+                    owl:AsymmetricProperty ,
+                    owl:IrreflexiveProperty ;
+           rdfs:comment "Indicates that an agent establishes or specifies a particular goal."@en ;
+           rdfs:label "defines"@en .
+
+
+###  https://w3id.org/hi-ontology#describesBehaviour
+hi:describesBehaviour rdf:type owl:ObjectProperty ,
+                               owl:SymmetricProperty .
+
+
+###  https://w3id.org/hi-ontology#evaluatedBy
+hi:evaluatedBy rdf:type owl:ObjectProperty ,
+                        owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ;
+               rdfs:domain hi:TaskExecution ;
+               rdfs:range hi:Evaluation ;
+               rdfs:comment "Execution is evaluated by a defined evaluation."@en .
+
+
+###  https://w3id.org/hi-ontology#executesTask
+hi:executesTask rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf owl:topObjectProperty ;
+                rdfs:domain hi:Agent ;
+                rdfs:range hi:Task ;
+                owl:propertyChainAxiom ( hi:performsExecution
+                                         hi:realizesTask
+                                       ) ;
+                rdfs:comment "Agent executes a task (derivable from Agent→Execution→Task)."@en .
+
+
+###  https://w3id.org/hi-ontology#forBuilding
+hi:forBuilding rdf:type owl:ObjectProperty ,
+                        owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ;
+               rdfs:domain hi:Data ;
+               rdfs:range hi:Agent .
+
+
+###  https://w3id.org/hi-ontology#hasAgentConcept
+hi:hasAgentConcept rdf:type owl:ObjectProperty ,
+                            owl:AsymmetricProperty ,
+                            owl:IrreflexiveProperty ;
+                   rdfs:domain hi:Agent ;
+                   rdfs:range skos:Concept ;
+                   rdfs:comment "Links an agent to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasAgentInvolved
+hi:hasAgentInvolved rdf:type owl:ObjectProperty ,
+                             owl:AsymmetricProperty ,
+                             owl:IrreflexiveProperty ;
+                    rdfs:domain hi:Interaction ;
+                    rdfs:range hi:Agent ;
+                    rdfs:comment "Indicates an agent that participates in or contributes to an interaction episode. This property identifies the human or artificial agents involved in the exchange."@en .
+
+
+###  https://w3id.org/hi-ontology#hasCapability
+hi:hasCapability rdf:type owl:ObjectProperty ;
+                 rdfs:domain hi:Agent ;
+                 rdfs:range hi:Capability ;
+                 rdfs:comment "Agent possesses a capability."@en .
+
+
+###  https://w3id.org/hi-ontology#hasCapabilityConcept
+hi:hasCapabilityConcept rdf:type owl:ObjectProperty ,
+                                 owl:AsymmetricProperty ,
+                                 owl:IrreflexiveProperty ;
+                        rdfs:domain hi:Capability ;
+                        rdfs:range skos:Concept ;
+                        rdfs:comment "Links a capability to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasConstraintConcept
+hi:hasConstraintConcept rdf:type owl:ObjectProperty ,
+                                 owl:AsymmetricProperty ,
+                                 owl:IrreflexiveProperty ;
+                        rdfs:domain [ rdf:type owl:Class ;
+                                      owl:unionOf ( hi:Agent
+                                                    hi:Context
+                                                    hi:HITeam
+                                                  )
+                                    ] ;
+                        rdfs:range skos:Concept ;
+                        rdfs:comment "Specifies the constraint using a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasContextConcept
+hi:hasContextConcept rdf:type owl:ObjectProperty ,
+                              owl:AsymmetricProperty ,
+                              owl:IrreflexiveProperty ;
+                     rdfs:domain hi:Context ;
+                     rdfs:range skos:Concept ;
+                     rdfs:comment "Links a context to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasDomainConcept
+hi:hasDomainConcept rdf:type owl:ObjectProperty ,
+                             owl:AsymmetricProperty ,
+                             owl:IrreflexiveProperty ;
+                    rdfs:domain hi:UseCase ;
+                    rdfs:range skos:Concept ;
+                    rdfs:comment "Links a domain to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasEpisodicMemory
+hi:hasEpisodicMemory rdf:type owl:ObjectProperty ,
+                              owl:AsymmetricProperty ,
+                              owl:IrreflexiveProperty ;
+                     rdfs:domain hi:Agent ;
+                     rdfs:range hi:EpisodicMemory .
+
+
+###  https://w3id.org/hi-ontology#hasEvaluationConcept
+hi:hasEvaluationConcept rdf:type owl:ObjectProperty ,
+                                 owl:AsymmetricProperty ,
+                                 owl:IrreflexiveProperty ;
+                        rdfs:domain hi:Evaluation ;
+                        rdfs:range skos:Concept ;
+                        rdfs:comment "Links an evaluation to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasExecutionConcept
+hi:hasExecutionConcept rdf:type owl:ObjectProperty ,
+                                owl:AsymmetricProperty ,
+                                owl:IrreflexiveProperty ;
+                       rdfs:domain hi:TaskExecution ;
+                       rdfs:range skos:Concept ;
+                       rdfs:comment "Links an experiment to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasExperiment
+hi:hasExperiment rdf:type owl:ObjectProperty ,
+                          owl:AsymmetricProperty ,
+                          owl:IrreflexiveProperty ;
+                 rdfs:domain hi:Evaluation ;
+                 rdfs:range hi:Experiment ;
+                 rdfs:comment "An evaluation has an experiment."@en .
+
+
+###  https://w3id.org/hi-ontology#hasExperimentConcept
+hi:hasExperimentConcept rdf:type owl:ObjectProperty ,
+                                 owl:AsymmetricProperty ,
+                                 owl:IrreflexiveProperty ;
+                        rdfs:domain hi:Experiment ;
+                        rdfs:range skos:Concept ;
+                        rdfs:comment "Links an experiment to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasGoal
+hi:hasGoal rdf:type owl:ObjectProperty ,
+                    owl:AsymmetricProperty ,
+                    owl:IrreflexiveProperty ;
+           rdfs:domain hi:HITeam ;
+           rdfs:range hi:Goal ;
+           rdfs:comment "An HI team pursues one or more goals."@en .
+
+
+###  https://w3id.org/hi-ontology#hasGoalConcept
+hi:hasGoalConcept rdf:type owl:ObjectProperty ,
+                           owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ;
+                  rdfs:domain hi:Goal ;
+                  rdfs:range skos:Concept ;
+                  rdfs:comment "Links a goal to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasHITeam
+hi:hasHITeam rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf owl:topObjectProperty ;
+             rdf:type owl:AsymmetricProperty ,
+                      owl:IrreflexiveProperty ;
+             rdfs:domain hi:UseCase ;
+             rdfs:range hi:HITeam ;
+             rdfs:comment "A use case introduces a hybrid intelligence team."@en .
+
+
+###  https://w3id.org/hi-ontology#hasInfluenceOn
+hi:hasInfluenceOn rdf:type owl:ObjectProperty ;
+                  owl:inverseOf hi:isInfluencedBy ;
+                  rdf:type owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ;
+                  rdfs:domain hi:Context ;
+                  rdfs:range hi:HITeam ;
+                  rdfs:comment "Relates a contextual condition to the HI team whose actions, collaboration dynamics, or task performance are influenced by that condition. It captures how background phenomena and constraints shape the team's operation in a given use case."@en .
+
+
+###  https://w3id.org/hi-ontology#hasInteractionEpisode
+hi:hasInteractionEpisode rdf:type owl:ObjectProperty ,
+                                  owl:AsymmetricProperty ,
+                                  owl:IrreflexiveProperty ;
+                         rdfs:domain hi:TaskExecution ;
+                         rdfs:range hi:Interaction ;
+                         rdfs:comment "Identifies moments of interaction (e.g., dialogue, negotiation, or guidance) that unfold within the execution of a task."@en .
+
+
+###  https://w3id.org/hi-ontology#hasInteractionIntentConcept
+hi:hasInteractionIntentConcept rdf:type owl:ObjectProperty ,
+                                        owl:AsymmetricProperty ,
+                                        owl:IrreflexiveProperty ;
+                               rdfs:domain hi:Interaction ;
+                               rdfs:range skos:Concept ;
+                               rdfs:comment "Intent underlying the interaction (e.g., explain, request, negotiate)."@en .
+
+
+###  https://w3id.org/hi-ontology#hasInteractionModalityConcept
+hi:hasInteractionModalityConcept rdf:type owl:ObjectProperty ,
+                                          owl:AsymmetricProperty ,
+                                          owl:IrreflexiveProperty ;
+                                 rdfs:domain hi:Interaction ;
+                                 rdfs:range skos:Concept ;
+                                 rdfs:comment "Modality/channel used during the interaction."@en .
+
+
+###  https://w3id.org/hi-ontology#hasMember
+hi:hasMember rdf:type owl:ObjectProperty ,
+                      owl:AsymmetricProperty ,
+                      owl:IrreflexiveProperty ;
+             rdfs:domain hi:HITeam ;
+             rdfs:range hi:Agent ;
+             rdfs:comment "Specifies agents that are members of an HI team."@en .
+
+
+###  https://w3id.org/hi-ontology#hasMethodConcept
+hi:hasMethodConcept rdf:type owl:ObjectProperty ,
+                             owl:AsymmetricProperty ,
+                             owl:IrreflexiveProperty ;
+                    rdfs:domain hi:TaskExecution ;
+                    rdfs:range skos:Concept ;
+                    rdfs:comment "Links a task execution to a method in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasMetricConcept
+hi:hasMetricConcept rdf:type owl:ObjectProperty ,
+                             owl:AsymmetricProperty ,
+                             owl:IrreflexiveProperty ;
+                    rdfs:domain hi:Evaluation ;
+                    rdfs:range skos:Concept ;
+                    rdfs:comment "An evaluation uses certain metrics, defined in the HINT thesaurus"@en .
+
+
+###  https://w3id.org/hi-ontology#hasMetricTested
+hi:hasMetricTested rdf:type owl:ObjectProperty ,
+                            owl:AsymmetricProperty ,
+                            owl:IrreflexiveProperty ;
+                   rdfs:domain hi:Experiment ;
+                   rdfs:range skos:Concept ;
+                   rdfs:comment "An experiment tests certain metrics, defined in the HINT thesaurus"@en .
+
+
+###  https://w3id.org/hi-ontology#hasPhenomenonConcept
+hi:hasPhenomenonConcept rdf:type owl:ObjectProperty ,
+                                 owl:AsymmetricProperty ,
+                                 owl:IrreflexiveProperty ;
+                        rdfs:domain [ rdf:type owl:Class ;
+                                      owl:unionOf ( hi:Agent
+                                                    hi:Context
+                                                    hi:HITeam
+                                                  )
+                                    ] ;
+                        rdfs:range skos:Concept ;
+                        rdfs:comment "Context exhibits a phenomenon (e.g., bias/feedback emerges in that context)."@en .
+
+
+###  https://w3id.org/hi-ontology#hasRoleConcept
+hi:hasRoleConcept rdf:type owl:ObjectProperty ,
+                           owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ;
+                  rdfs:domain hi:Agent ;
+                  rdfs:range skos:Concept ;
+                  rdfs:comment "Links a role to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasTaskConcept
+hi:hasTaskConcept rdf:type owl:ObjectProperty ,
+                           owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ;
+                  rdfs:domain hi:Task ;
+                  rdfs:range skos:Concept ;
+                  rdfs:comment "Links a task to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#hasUseCaseConcept
+hi:hasUseCaseConcept rdf:type owl:ObjectProperty ,
+                              owl:AsymmetricProperty ,
+                              owl:IrreflexiveProperty ;
+                     rdfs:domain hi:UseCase ;
+                     rdfs:range skos:Concept ;
+                     rdfs:comment "Links a use case to a concept in the HINT thesaurus."@en .
+
+
+###  https://w3id.org/hi-ontology#implementedIn
+hi:implementedIn rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf owl:topObjectProperty .
+
+
+###  https://w3id.org/hi-ontology#improves
+hi:improves rdf:type owl:ObjectProperty ,
+                     owl:TransitiveProperty ;
+            rdfs:comment "Indicates that one entity enhances or makes another entity better in some measurable way."@en ;
+            rdfs:label "improves"@en .
+
+
+###  https://w3id.org/hi-ontology#isAspectOf
+hi:isAspectOf rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf owl:topObjectProperty ;
+              rdf:type owl:FunctionalProperty ,
+                       owl:AsymmetricProperty ,
+                       owl:IrreflexiveProperty ;
+              rdfs:domain hi:EventAspect ;
+              rdfs:range hi:Event .
+
+
+###  https://w3id.org/hi-ontology#isAssignedToTask
+hi:isAssignedToTask rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf owl:topObjectProperty ;
+                    rdfs:domain hi:Agent ;
+                    rdfs:range hi:Task ;
+                    owl:propertyChainAxiom ( hi:performsExecution
+                                             hi:realizesTask
+                                           ) ;
+                    rdfs:comment "Relates an agent to a task that it is formally assigned to perform. Every assignment implies that the agent is eligible for that task."@en .
+
+
+###  https://w3id.org/hi-ontology#isBasedOn
+hi:isBasedOn rdf:type owl:ObjectProperty ;
+             rdfs:range hi:HumanIntervention .
+
+
+###  https://w3id.org/hi-ontology#isEligibleForTask
+hi:isEligibleForTask rdf:type owl:ObjectProperty ;
+                     rdfs:domain hi:Agent ;
+                     rdfs:range hi:Task ;
+                     owl:propertyChainAxiom ( hi:hasCapability
+                                              hi:allowsTask
+                                            ) ;
+                     rdfs:comment "Relates an agent to a task it is eligible to perform, based on their capabilities. Assignment is a stricter, policy-level decision that presupposes eligibility."@en .
+
+
+###  https://w3id.org/hi-ontology#isHallucinationOf
+hi:isHallucinationOf rdf:type owl:ObjectProperty ,
+                              owl:AsymmetricProperty ,
+                              owl:IrreflexiveProperty ;
+                     rdfs:domain hi:EventAspect ;
+                     rdfs:range hi:Agent .
+
+
+###  https://w3id.org/hi-ontology#isIndicatorOf
+hi:isIndicatorOf rdf:type owl:ObjectProperty ;
+                 rdfs:domain hi:Behaviour .
+
+
+###  https://w3id.org/hi-ontology#isInfluencedBy
+hi:isInfluencedBy rdf:type owl:ObjectProperty ,
+                           owl:AsymmetricProperty ,
+                           owl:IrreflexiveProperty ;
+                  rdfs:domain hi:HITeam ;
+                  rdfs:range hi:Context ;
+                  rdfs:comment "Related a HI Team to the contextual condition that affects its actions, collaboration dynamics, or task performance."@en .
+
+
+###  https://w3id.org/hi-ontology#isPartOf
+hi:isPartOf rdf:type owl:ObjectProperty ,
+                     owl:InverseFunctionalProperty ,
+                     owl:IrreflexiveProperty ;
+            rdfs:domain hi:Event ;
+            rdfs:range hi:PossibleConflictingEvent .
+
+
+###  https://w3id.org/hi-ontology#isPartOfDomain
+hi:isPartOfDomain rdf:type owl:ObjectProperty ,
+                           owl:InverseFunctionalProperty ,
+                           owl:IrreflexiveProperty .
+
+
+###  https://w3id.org/hi-ontology#isReducedTo
+hi:isReducedTo rdf:type owl:ObjectProperty ,
+                        owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ;
+               rdfs:domain hi:HumanBehaviour ;
+               rdfs:range <https://www.wikidata.org/wiki/Q1122506> .
+
+
+###  https://w3id.org/hi-ontology#isSpatiallyGroundedIn
+hi:isSpatiallyGroundedIn rdf:type owl:ObjectProperty ,
+                                  owl:FunctionalProperty ,
+                                  owl:AsymmetricProperty ,
+                                  owl:IrreflexiveProperty ;
+                         rdfs:domain hi:Memory ;
+                         rdfs:range hi:Event .
+
+
+###  https://w3id.org/hi-ontology#isTemporallyGroundedIn
+hi:isTemporallyGroundedIn rdf:type owl:ObjectProperty ,
+                                   owl:FunctionalProperty ,
+                                   owl:AsymmetricProperty ,
+                                   owl:IrreflexiveProperty ;
+                          rdfs:domain hi:Memory ;
+                          rdfs:range hi:PastEvent .
+
+
+###  https://w3id.org/hi-ontology#isWayToPerceive
+hi:isWayToPerceive rdf:type owl:ObjectProperty ,
+                            owl:AsymmetricProperty ,
+                            owl:IrreflexiveProperty ;
+                   rdfs:domain hi:UnderstandingOfEvent ;
+                   rdfs:range hi:Event .
+
+
+###  https://w3id.org/hi-ontology#measures
+hi:measures rdf:type owl:ObjectProperty ,
+                     owl:AsymmetricProperty ,
+                     owl:IrreflexiveProperty ;
+            rdfs:domain hi:Evaluation ;
+            rdfs:range hi:Capability ;
+            rdfs:comment "Indicates that an evaluation assesses or quantifies a particular capability or attribute."@en ;
+            rdfs:label "measures"@en .
+
+
+###  https://w3id.org/hi-ontology#observedBy
+hi:observedBy rdf:type owl:ObjectProperty ,
+                       owl:AsymmetricProperty ,
+                       owl:IrreflexiveProperty ;
+              rdfs:domain hi:EventAspect ;
+              rdfs:range hi:Agent .
+
+
+###  https://w3id.org/hi-ontology#operatesInContext
+hi:operatesInContext rdf:type owl:ObjectProperty ,
+                              owl:AsymmetricProperty ,
+                              owl:IrreflexiveProperty ;
+                     rdfs:domain hi:Agent ;
+                     rdfs:range hi:Context ;
+                     rdfs:comment "Specifies the context in which an HI team operates."@en .
+
+
+###  https://w3id.org/hi-ontology#overlapsWith
+hi:overlapsWith rdf:type owl:ObjectProperty ,
+                         owl:TransitiveProperty ;
+                rdfs:domain hi:EventAspect .
+
+
+###  https://w3id.org/hi-ontology#performedBy
+hi:performedBy rdf:type owl:ObjectProperty ;
+               owl:inverseOf hi:performsExecution ;
+               rdf:type owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ;
+               rdfs:domain [ rdf:type owl:Class ;
+                             owl:unionOf ( hi:TaskExecution
+                                         )
+                           ] ;
+               rdfs:range hi:Agent ;
+               rdfs:comment "Execution performed by an agent."@en .
+
+
+###  https://w3id.org/hi-ontology#performsExecution
+hi:performsExecution rdf:type owl:ObjectProperty ,
+                              owl:AsymmetricProperty ,
+                              owl:IrreflexiveProperty ;
+                     rdfs:domain hi:Agent ;
+                     rdfs:range hi:TaskExecution ;
+                     rdfs:comment "Agent that performs a specific task execution."@en .
+
+
+###  https://w3id.org/hi-ontology#proposes
+hi:proposes rdf:type owl:ObjectProperty .
+
+
+###  https://w3id.org/hi-ontology#realizedBy
+hi:realizedBy rdf:type owl:ObjectProperty ;
+              owl:inverseOf hi:realizesTask ;
+              rdfs:domain hi:Task ;
+              rdfs:range hi:TaskExecution ;
+              rdfs:comment "A task is realized through a task execution."@en .
+
+
+###  https://w3id.org/hi-ontology#realizesTask
+hi:realizesTask rdf:type owl:ObjectProperty ;
+                rdfs:domain hi:TaskExecution ;
+                rdfs:range hi:Task ;
+                rdfs:comment "Task execution realizes a task."@en .
+
+
+###  https://w3id.org/hi-ontology#requires
+hi:requires rdf:type owl:ObjectProperty ,
+                     owl:TransitiveProperty .
+
+
+###  https://w3id.org/hi-ontology#requiresCapability
+hi:requiresCapability rdf:type owl:ObjectProperty ,
+                               owl:AsymmetricProperty ,
+                               owl:IrreflexiveProperty ;
+                      rdfs:domain hi:Task ;
+                      rdfs:range hi:Capability ;
+                      rdfs:comment "A task requires certain capabilities to be accomplished."@en .
+
+
+###  https://w3id.org/hi-ontology#requiresTask
+hi:requiresTask rdf:type owl:ObjectProperty ,
+                         owl:AsymmetricProperty ,
+                         owl:IrreflexiveProperty ;
+                rdfs:domain hi:Goal ;
+                rdfs:range hi:Task ;
+                rdfs:comment "A goal requires one or more tasks to be fulfilled."@en .
+
+
+###  https://w3id.org/hi-ontology#summarises
+hi:summarises rdf:type owl:ObjectProperty ,
+                       owl:AsymmetricProperty ,
+                       owl:IrreflexiveProperty ;
+              rdfs:domain hi:Agent ;
+              rdfs:range hi:EventAspect .
+
+
+###  https://w3id.org/hi-ontology#towardsGoal
+hi:towardsGoal rdf:type owl:ObjectProperty ,
+                        owl:AsymmetricProperty ,
+                        owl:IrreflexiveProperty ;
+               rdfs:domain hi:TaskExecution ;
+               rdfs:range hi:Goal ;
+               rdfs:comment "Task execution towards a goal."@en .
+
+
+###  https://w3id.org/hi-ontology#usedBy
+hi:usedBy rdf:type owl:ObjectProperty ;
+          owl:inverseOf hi:uses ;
+          rdf:type owl:AsymmetricProperty .
+
+
+###  https://w3id.org/hi-ontology#usedForTraining
+hi:usedForTraining rdf:type owl:ObjectProperty ;
+                   rdfs:domain hi:Data ;
+                   rdfs:range hi:Agent ,
+                              <https://www.wikidata.org/wiki/Q1122506> .
+
+
+###  https://w3id.org/hi-ontology#uses
+hi:uses rdf:type owl:ObjectProperty ,
+                 owl:AsymmetricProperty ,
+                 owl:IrreflexiveProperty ;
+        rdfs:comment "Indicates that an agent employs or utilizes a resource, tool, or method."@en ;
+        rdfs:label "uses"@en .
+
+
+###  https://w3id.org/hi-ontology#verbalisedBy
+hi:verbalisedBy rdf:type owl:ObjectProperty ,
+                         owl:AsymmetricProperty ,
+                         owl:IrreflexiveProperty ;
+                rdfs:domain hi:EventAspect ;
+                rdfs:range hi:Agent .
+
+
+###  https://w3id.org/hi-ontology/grade10#executesTask
+:executesTask rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :isAssignedToTask .
+
+
+###  https://w3id.org/hi-ontology/grade10#implementedIn
+:implementedIn rdf:type owl:ObjectProperty ,
+                        owl:TransitiveProperty ;
+               rdfs:domain [ rdf:type owl:Class ;
+                             owl:unionOf ( hi:Agent
+                                           hi:Study
+                                           <https://www.wikidata.org/wiki/Q2695280>
+                                         )
+                           ] .
+
+
+###  https://w3id.org/hi-ontology/grade10#isAssignedToTask
+:isAssignedToTask rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :isEligibleForTask .
+
+
+###  https://w3id.org/hi-ontology/grade10#isEligibleForTask
+:isEligibleForTask rdf:type owl:ObjectProperty .
+
+
+###  https://w3id.org/hi-ontology/grade10#occursIn
+:occursIn rdf:type owl:ObjectProperty ,
+                   owl:TransitiveProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  https://w3id.org/hi-ontology#hasAlternativeHypothesis
+hi:hasAlternativeHypothesis rdf:type owl:DatatypeProperty ;
+                            rdfs:domain hi:Experiment ;
+                            rdfs:range xsd:string ;
+                            rdfs:comment "Stores the textual formulation of the alternative hypothesis of an experiment."@en .
+
+
+###  https://w3id.org/hi-ontology#hasNullHypothesis
+hi:hasNullHypothesis rdf:type owl:DatatypeProperty ;
+                     rdfs:domain hi:Experiment ;
+                     rdfs:range xsd:string ;
+                     rdfs:comment "Stores the textual formulation of the null hypothesis of an experiment."@en .
+
+
+###  https://w3id.org/hi-ontology#hasNumberOfParticipants
+hi:hasNumberOfParticipants rdf:type owl:DatatypeProperty ;
+                           rdfs:domain hi:Experiment ;
+                           rdfs:range xsd:integer .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://dbpedia.org/ontology/Information
+<http://dbpedia.org/ontology/Information> rdf:type owl:Class ;
+                                          rdfs:label "Information"@en .
+
+
+###  http://schema.org/Organization
+schema:Organization rdf:type owl:Class ;
+                    rdfs:comment "A Schema.org class representing an organization such as an institution, company, or group."@en ;
+                    rdfs:label "Organization"@en .
+
+
+###  http://schema.org/PropertyValue
+schema:PropertyValue rdf:type owl:Class ;
+                     rdfs:comment "A Schema.org class representing a specific property-value pair, often used for metadata or structured descriptions."@en ;
+                     rdfs:label "PropertyValue"@en .
+
+
+###  http://www.w3.org/2004/02/skos/core#Concept
+skos:Concept rdf:type owl:Class ;
+             rdfs:comment "A SKOS concept representing a unit of thought, used for controlled vocabularies and thesauri."@en ;
+             rdfs:label "Concept"@en .
+
+
+###  http://xmlns.com/foaf/0.1/Person
+foaf:Person rdf:type owl:Class ;
+            owl:equivalentClass hi:Human ;
+            rdfs:comment "A human individual described using the FOAF vocabulary. Represents natural persons who may participate in, interact with, or be modeled within a Hybrid Intelligence scenario."@en ;
+            rdfs:label "Person"@en .
+
+
+###  https://w3id.org/hi-ontology#ATPOAlgorithm
+hi:ATPOAlgorithm rdf:type owl:Class ;
+                 rdfs:subClassOf hi:Algorithm .
+
+
+###  https://w3id.org/hi-ontology#AdHocTeamwork
+hi:AdHocTeamwork rdf:type owl:Class ;
+                 rdfs:subClassOf hi:Interaction .
+
+
+###  https://w3id.org/hi-ontology#AdHocTeamworkFramework
+hi:AdHocTeamworkFramework rdf:type owl:Class ;
+                          rdfs:subClassOf <https://www.wikidata.org/wiki/Q2695280> .
+
+
+###  https://w3id.org/hi-ontology#Adaptivity
+hi:Adaptivity rdf:type owl:Class ;
+              rdfs:subClassOf hi:Capability .
+
+
+###  https://w3id.org/hi-ontology#Agent
+hi:Agent rdf:type owl:Class ;
+         rdfs:comment "An autonomous entity capable of having roles, goals, and capabilities within a hybrid intelligence system."@en ;
+         rdfs:seeAlso <http://www.w3.org/ns/prov#Agent> .
+
+
+###  https://w3id.org/hi-ontology#AgentPolicy
+hi:AgentPolicy rdf:type owl:Class ;
+               rdfs:subClassOf hi:Policy ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty hi:implementedIn ;
+                                 owl:someValuesFrom hi:DeepQNetwork
+                               ] .
+
+
+###  https://w3id.org/hi-ontology#Ahtalgorithm
+hi:Ahtalgorithm rdf:type owl:Class ;
+                rdfs:subClassOf hi:ATPOAlgorithm .
+
+
+###  https://w3id.org/hi-ontology#Aibasedimageanalysis
+hi:Aibasedimageanalysis rdf:type owl:Class ;
+                        rdfs:subClassOf hi:Task .
+
+
+###  https://w3id.org/hi-ontology#Algorithm
+hi:Algorithm rdf:type owl:Class ;
+             skos:exactMatch <http://semanticscience.org/resource/SIO_000252> .
+
+
+###  https://w3id.org/hi-ontology#Annotationerror
+hi:Annotationerror rdf:type owl:Class ;
+                   rdfs:subClassOf hi:Error ;
+                   rdfs:label "AnnotationError"@en .
+
+
+###  https://w3id.org/hi-ontology#Annotator
+hi:Annotator rdf:type owl:Class ;
+             rdfs:subClassOf hi:Agent .
+
+
+###  https://w3id.org/hi-ontology#ArtificialAgent
+hi:ArtificialAgent rdf:type owl:Class ;
+                   rdfs:subClassOf hi:Agent ;
+                   owl:disjointWith hi:HumanAgent ;
+                   rdfs:comment "An artificial or computational agent (robot, software, etc.) collaborating with human agents."@en .
+
+
+###  https://w3id.org/hi-ontology#AutonomousAgent
+hi:AutonomousAgent rdf:type owl:Class ;
+                   rdfs:subClassOf hi:Agent .
+
+
+###  https://w3id.org/hi-ontology#Behaviorlibrary
+hi:Behaviorlibrary rdf:type owl:Class ;
+                   rdfs:subClassOf hi:Data .
+
+
+###  https://w3id.org/hi-ontology#Behaviour
+hi:Behaviour rdf:type owl:Class ;
+             rdfs:subClassOf skos:Concept .
+
+
+###  https://w3id.org/hi-ontology#BehaviouralMeasurement
+hi:BehaviouralMeasurement rdf:type owl:Class ;
+                          owl:equivalentClass hi:HumanGamePlayData ;
+                          rdfs:subClassOf hi:Behaviour .
+
+
+###  https://w3id.org/hi-ontology#BenchMarkDataset
+hi:BenchMarkDataset rdf:type owl:Class ;
+                    rdfs:subClassOf hi:Data .
+
+
+###  https://w3id.org/hi-ontology#Bestresponsepolicy
+hi:Bestresponsepolicy rdf:type owl:Class ;
+                      rdfs:subClassOf hi:AgentPolicy ;
+                      rdfs:label "BestResponsePolicy"@en .
+
+
+###  https://w3id.org/hi-ontology#BiometricDataset
+hi:BiometricDataset rdf:type owl:Class ;
+                    rdfs:subClassOf hi:Data .
+
+
+###  https://w3id.org/hi-ontology#BiometricSensor
+hi:BiometricSensor rdf:type owl:Class ;
+                   rdfs:subClassOf <http://dbpedia.org/ontology/Information> .
+
+
+###  https://w3id.org/hi-ontology#Biomimeticrobotics
+hi:Biomimeticrobotics rdf:type owl:Class ;
+                      rdfs:subClassOf hi:Capability .
+
+
+###  https://w3id.org/hi-ontology#Brainagepredictor
+hi:Brainagepredictor rdf:type owl:Class ;
+                     rdfs:subClassOf <https://www.wikidata.org/wiki/Q1122506> ;
+                     rdfs:label "BrainAgePredictor"@en .
+
+
+###  https://w3id.org/hi-ontology#Capability
+hi:Capability rdf:type owl:Class ;
+              rdfs:comment "A skill, competence, or functional capacity that allows an agent to perform or enable a task."@en ;
+              skos:closeMatch <http://dbpedia.org/ontology/Skill> .
+
+
+###  https://w3id.org/hi-ontology#Categoryboundarieserror
+hi:Categoryboundarieserror rdf:type owl:Class ;
+                           rdfs:subClassOf hi:Error .
+
+
+###  https://w3id.org/hi-ontology#Chainofthoughtprompting
+hi:Chainofthoughtprompting rdf:type owl:Class ;
+                           rdfs:subClassOf hi:PromptEngineering ;
+                           rdfs:label "ChainOfThoughtPrompting"@en .
+
+
+###  https://w3id.org/hi-ontology#ClinicalBiomarker
+hi:ClinicalBiomarker rdf:type owl:Class ;
+                     rdfs:subClassOf skos:Concept .
+
+
+###  https://w3id.org/hi-ontology#Cognitiveworkload
+hi:Cognitiveworkload rdf:type owl:Class ;
+                     rdfs:subClassOf hi:Memory .
+
+
+###  https://w3id.org/hi-ontology#Context
+hi:Context rdf:type owl:Class ;
+           rdfs:comment "Situational conditions (environmental, cultural, cognitive) under which tasks and evaluations occur."@en ;
+           rdfs:label "Context"@en .
+
+
+###  https://w3id.org/hi-ontology#DQNModel
+hi:DQNModel rdf:type owl:Class ;
+            rdfs:subClassOf <https://www.wikidata.org/wiki/Q1122506> ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty hi:implementedIn ;
+                              owl:someValuesFrom hi:AgentPolicy
+                            ] .
+
+
+###  https://w3id.org/hi-ontology#Data
+hi:Data rdf:type owl:Class ;
+        rdfs:subClassOf <http://dbpedia.org/ontology/Information> ;
+        skos:closeMatch <https://www.w3.org/ns/dcat#Dataset> .
+
+
+###  https://w3id.org/hi-ontology#Dataplatform
+hi:Dataplatform rdf:type owl:Class ;
+                rdfs:subClassOf <https://www.wikidata.org/wiki/Q2695280> ;
+                rdfs:label "DataPlatform"@en .
+
+
+###  https://w3id.org/hi-ontology#DeepQNetwork
+hi:DeepQNetwork rdf:type owl:Class ;
+                rdfs:subClassOf hi:Algorithm ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty hi:implementedIn ;
+                                  owl:someValuesFrom hi:Policy
+                                ] .
+
+
+###  https://w3id.org/hi-ontology#Deeplearning
+hi:Deeplearning rdf:type owl:Class ;
+                rdfs:subClassOf hi:Algorithm ;
+                rdfs:label "DeepLearning"@en .
+
+
+###  https://w3id.org/hi-ontology#Deepneuralnetwork
+hi:Deepneuralnetwork rdf:type owl:Class ;
+                     rdfs:subClassOf hi:Algorithm .
+
+
+###  https://w3id.org/hi-ontology#Descriptionlogic
+hi:Descriptionlogic rdf:type owl:Class ;
+                    rdfs:subClassOf hi:Algorithm .
+
+
+###  https://w3id.org/hi-ontology#Dialogue
+hi:Dialogue rdf:type owl:Class ;
+            rdfs:subClassOf hi:Interaction .
+
+
+###  https://w3id.org/hi-ontology#Dialoguestrategy
+hi:Dialoguestrategy rdf:type owl:Class ;
+                    rdfs:subClassOf <https://www.wikidata.org/wiki/Q2695280> .
+
+
+###  https://w3id.org/hi-ontology#Distributedcognitiontheory
+hi:Distributedcognitiontheory rdf:type owl:Class ;
+                              rdfs:subClassOf hi:Theory .
+
+
+###  https://w3id.org/hi-ontology#Dlreasoner
+hi:Dlreasoner rdf:type owl:Class ;
+              rdfs:subClassOf hi:ArtificialAgent .
+
+
+###  https://w3id.org/hi-ontology#EpisodicMemory
+hi:EpisodicMemory rdf:type owl:Class ;
+                  rdfs:subClassOf hi:Memory .
+
+
+###  https://w3id.org/hi-ontology#Error
+hi:Error rdf:type owl:Class ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :implementedIn ;
+                           owl:someValuesFrom hi:Experiment
+                         ] ;
+         rdfs:seeAlso <https://dbpedia.org/page/Error_message> .
+
+
+###  https://w3id.org/hi-ontology#Evaluation
+hi:Evaluation rdf:type owl:Class ;
+              rdfs:comment "A process of assessing the quality or outcome of executions, methods, or goals."@en ;
+              rdfs:label "Evaluation"@en .
+
+
+###  https://w3id.org/hi-ontology#Event
+hi:Event rdf:type owl:Class ;
+         rdfs:subClassOf skos:Concept .
+
+
+###  https://w3id.org/hi-ontology#EventAspect
+hi:EventAspect rdf:type owl:Class ;
+               owl:equivalentClass [ rdf:type owl:Restriction ;
+                                     owl:onProperty hi:isAspectOf ;
+                                     owl:someValuesFrom hi:Agent
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty hi:observedBy ;
+                                     owl:someValuesFrom hi:Agent
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty hi:verbalisedBy ;
+                                     owl:someValuesFrom hi:Agent
+                                   ] ;
+               rdfs:subClassOf hi:EpisodicMemory .
+
+
+###  https://w3id.org/hi-ontology#Experiment
+hi:Experiment rdf:type owl:Class ;
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty hi:hasGoal ;
+                                owl:someValuesFrom hi:Goal
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty hi:hasMetricTested ;
+                                owl:someValuesFrom hi:Evaluation
+                              ] ;
+              rdfs:comment "An empirical setup linked to an evaluation that tests metrics and hypotheses."@en ;
+              rdfs:label "Experiment"@en .
+
+
+###  https://w3id.org/hi-ontology#Expertinterview
+hi:Expertinterview rdf:type owl:Class ;
+                   rdfs:subClassOf hi:Interaction .
+
+
+###  https://w3id.org/hi-ontology#FactualMemory
+hi:FactualMemory rdf:type owl:Class ;
+                 rdfs:subClassOf hi:Memory .
+
+
+###  https://w3id.org/hi-ontology#FewShotCoTPrompting
+hi:FewShotCoTPrompting rdf:type owl:Class ;
+                       rdfs:subClassOf hi:Chainofthoughtprompting .
+
+
+###  https://w3id.org/hi-ontology#Fewshotprompting
+hi:Fewshotprompting rdf:type owl:Class ;
+                    rdfs:subClassOf hi:PromptEngineering ;
+                    rdfs:label "FewShotPrompting"@en .
+
+
+###  https://w3id.org/hi-ontology#Functionality
+hi:Functionality rdf:type owl:Class ;
+                 rdfs:subClassOf hi:Capability .
+
+
+###  https://w3id.org/hi-ontology#GamePlayBehaviour
+hi:GamePlayBehaviour rdf:type owl:Class ;
+                     owl:equivalentClass [ rdf:type owl:Restriction ;
+                                           owl:onProperty hi:usedForTraining ;
+                                           owl:someValuesFrom hi:TrustPredictionModel
+                                         ] ;
+                     rdfs:subClassOf hi:Behaviour .
+
+
+###  https://w3id.org/hi-ontology#GamePlayData
+hi:GamePlayData rdf:type owl:Class ;
+                owl:equivalentClass [ rdf:type owl:Restriction ;
+                                      owl:onProperty hi:describesBehaviour ;
+                                      owl:someValuesFrom hi:GamePlayBehaviour
+                                    ] ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty hi:forBuilding ;
+                                      owl:someValuesFrom hi:TrustAdaptableAgent
+                                    ] ;
+                rdfs:subClassOf hi:Data .
+
+
+###  https://w3id.org/hi-ontology#Goal
+hi:Goal rdf:type owl:Class ;
+        rdfs:subClassOf [ rdf:type owl:Restriction ;
+                          owl:onProperty hi:requiresTask ;
+                          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onClass hi:Task
+                        ] ;
+        rdfs:comment "A desired outcome pursued by an HI team, requiring one or more tasks to be completed."@en ;
+        rdfs:label <https://dbpedia.org/ontology/Goal> ,
+                   "Goal"@en .
+
+
+###  https://w3id.org/hi-ontology#HITeam
+hi:HITeam rdf:type owl:Class ;
+          rdfs:subClassOf [ rdf:type owl:Restriction ;
+                            owl:onProperty hi:hasMember ;
+                            owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onClass hi:ArtificialAgent
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty hi:hasMember ;
+                            owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onClass hi:HumanAgent
+                          ] ;
+          rdfs:comment "A hybrid intelligence team composed of human and artificial agents pursuing a shared goal."@en .
+
+
+###  https://w3id.org/hi-ontology#Hallucination
+hi:Hallucination rdf:type owl:Class ;
+                 rdfs:subClassOf skos:Concept .
+
+
+###  https://w3id.org/hi-ontology#Hallucinationerror
+hi:Hallucinationerror rdf:type owl:Class ;
+                      rdfs:subClassOf hi:Error .
+
+
+###  https://w3id.org/hi-ontology#Hermitreasoner
+hi:Hermitreasoner rdf:type owl:Class ;
+                  rdfs:subClassOf hi:ArtificialAgent .
+
+
+###  https://w3id.org/hi-ontology#Highperformancecomputing
+hi:Highperformancecomputing rdf:type owl:Class ;
+                            rdfs:subClassOf hi:Task .
+
+
+###  https://w3id.org/hi-ontology#Human
+hi:Human rdf:type owl:Class .
+
+
+###  https://w3id.org/hi-ontology#HumanAgent
+hi:HumanAgent rdf:type owl:Class ;
+              rdfs:subClassOf foaf:Person ,
+                              hi:Agent ;
+              rdfs:comment "A human participant in the hybrid intelligence system, possessing cognitive and perceptual abilities."@en .
+
+
+###  https://w3id.org/hi-ontology#HumanBehaviour
+hi:HumanBehaviour rdf:type owl:Class ;
+                  rdfs:subClassOf hi:Behaviour .
+
+
+###  https://w3id.org/hi-ontology#HumanGamePlayData
+hi:HumanGamePlayData rdf:type owl:Class ;
+                     rdfs:subClassOf hi:Data .
+
+
+###  https://w3id.org/hi-ontology#HumanIntervention
+hi:HumanIntervention rdf:type owl:Class ;
+                     rdfs:subClassOf hi:Interaction .
+
+
+###  https://w3id.org/hi-ontology#Humanaiframework
+hi:Humanaiframework rdf:type owl:Class ;
+                    rdfs:subClassOf <https://www.wikidata.org/wiki/Q2695280> .
+
+
+###  https://w3id.org/hi-ontology#Humancenteredai
+hi:Humancenteredai rdf:type owl:Class ;
+                   rdfs:subClassOf skos:Concept ;
+                   rdfs:label "HumanCenteredAi"@en .
+
+
+###  https://w3id.org/hi-ontology#Humanexpertvalidation
+hi:Humanexpertvalidation rdf:type owl:Class ;
+                         rdfs:subClassOf hi:Evaluation .
+
+
+###  https://w3id.org/hi-ontology#Humanmachineteaming
+hi:Humanmachineteaming rdf:type owl:Class ;
+                       rdfs:subClassOf hi:Interaction ;
+                       rdfs:label "HumanMachineTeaming"@en .
+
+
+###  https://w3id.org/hi-ontology#Humanmachineteamingresearch
+hi:Humanmachineteamingresearch rdf:type owl:Class ;
+                               rdfs:subClassOf hi:Experiment .
+
+
+###  https://w3id.org/hi-ontology#Hybridhumanaiintelligence
+hi:Hybridhumanaiintelligence rdf:type owl:Class ;
+                             rdfs:subClassOf hi:HITeam .
+
+
+###  https://w3id.org/hi-ontology#Hybridintelligence
+hi:Hybridintelligence rdf:type owl:Class ;
+                      rdfs:subClassOf hi:HITeam ;
+                      rdfs:label "HybridIntelligence"@en .
+
+
+###  https://w3id.org/hi-ontology#Hybridintelligenceteams
+hi:Hybridintelligenceteams rdf:type owl:Class ;
+                           rdfs:subClassOf hi:HITeam ;
+                           rdfs:label "HybridIntelligenceTeams"@en .
+
+
+###  https://w3id.org/hi-ontology#Impliedinformationerror
+hi:Impliedinformationerror rdf:type owl:Class ;
+                           rdfs:subClassOf hi:Error .
+
+
+###  https://w3id.org/hi-ontology#Importanceerror
+hi:Importanceerror rdf:type owl:Class ;
+                   rdfs:subClassOf hi:Error .
+
+
+###  https://w3id.org/hi-ontology#InferenceModel
+hi:InferenceModel rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Restriction ;
+                                        owl:onProperty hi:canInfer ;
+                                        owl:someValuesFrom hi:Trust
+                                      ] ;
+                  rdfs:subClassOf <https://www.wikidata.org/wiki/Q1122506> .
+
+
+###  https://w3id.org/hi-ontology#Interaction
+hi:Interaction rdf:type owl:Class ;
+               rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                 owl:onProperty hi:hasAgentInvolved ;
+                                 owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                                 owl:onClass hi:Agent
+                               ] ;
+               rdfs:comment "A multi-agent task execution where two or more agents coordinate (verbal, symbolic, or physical) toward a goal."@en ;
+               rdfs:label "Interaction"@en .
+
+
+###  https://w3id.org/hi-ontology#Memory
+hi:Memory rdf:type owl:Class ;
+          owl:equivalentClass [ rdf:type owl:Restriction ;
+                                owl:onProperty hi:isSpatiallyGroundedIn ;
+                                owl:someValuesFrom hi:Event
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty hi:isSpatiallyGroundedIn ;
+                                owl:someValuesFrom hi:PastEvent
+                              ] ;
+          rdfs:subClassOf skos:Concept .
+
+
+###  https://w3id.org/hi-ontology#MemoryCoConstructionAgent
+hi:MemoryCoConstructionAgent rdf:type owl:Class ;
+                             rdfs:subClassOf hi:ArtificialAgent ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty hi:requires ;
+                                               owl:someValuesFrom hi:Adaptivity
+                                             ] .
+
+
+###  https://w3id.org/hi-ontology#Memorycoconstruction
+hi:Memorycoconstruction rdf:type owl:Class ;
+                        rdfs:subClassOf hi:Memory ;
+                        rdfs:label "MemoryCoConstruction"@en .
+
+
+###  https://w3id.org/hi-ontology#MotionSensor
+hi:MotionSensor rdf:type owl:Class ;
+                rdfs:subClassOf <http://dbpedia.org/ontology/Information> .
+
+
+###  https://w3id.org/hi-ontology#Neurosymbolicframework
+hi:Neurosymbolicframework rdf:type owl:Class ;
+                          rdfs:subClassOf <https://www.wikidata.org/wiki/Q2695280> ;
+                          rdfs:label "Neurosymbolicframework"@en .
+
+
+###  https://w3id.org/hi-ontology#Ontologybasedriskassessment
+hi:Ontologybasedriskassessment rdf:type owl:Class ;
+                               rdfs:subClassOf hi:Evaluation ;
+                               rdfs:label "OntologyBasedRiskAssessment"@en .
+
+
+###  https://w3id.org/hi-ontology#PastEvent
+hi:PastEvent rdf:type owl:Class ;
+             rdfs:subClassOf hi:Event .
+
+
+###  https://w3id.org/hi-ontology#Perspective
+hi:Perspective rdf:type owl:Class ;
+               rdfs:subClassOf skos:Concept ,
+                               hi:Context .
+
+
+###  https://w3id.org/hi-ontology#Policy
+hi:Policy rdf:type owl:Class ;
+          rdfs:subClassOf <https://www.wikidata.org/wiki/Q2695280> .
+
+
+###  https://w3id.org/hi-ontology#PossibleConflictingEvent
+hi:PossibleConflictingEvent rdf:type owl:Class ;
+                            rdfs:subClassOf hi:Event .
+
+
+###  https://w3id.org/hi-ontology#PromptEngineering
+hi:PromptEngineering rdf:type owl:Class ;
+                     rdfs:subClassOf hi:Capability .
+
+
+###  https://w3id.org/hi-ontology#Promptregeneration
+hi:Promptregeneration rdf:type owl:Class ;
+                      rdfs:subClassOf hi:PromptEngineering .
+
+
+###  https://w3id.org/hi-ontology#Reasoningtext
+hi:Reasoningtext rdf:type owl:Class ;
+                 rdfs:subClassOf hi:Data .
+
+
+###  https://w3id.org/hi-ontology#ReinforcementLearningModel
+hi:ReinforcementLearningModel rdf:type owl:Class ;
+                              rdfs:subClassOf <https://www.wikidata.org/wiki/Q1122506> .
+
+
+###  https://w3id.org/hi-ontology#RemoteSensor
+hi:RemoteSensor rdf:type owl:Class ;
+                rdfs:subClassOf <http://dbpedia.org/ontology/Information> .
+
+
+###  https://w3id.org/hi-ontology#Safety
+hi:Safety rdf:type owl:Class ;
+          rdfs:subClassOf skos:Concept .
+
+
+###  https://w3id.org/hi-ontology#Shifttransitionmanagement
+hi:Shifttransitionmanagement rdf:type owl:Class ;
+                             rdfs:subClassOf hi:Task .
+
+
+###  https://w3id.org/hi-ontology#Simulationpanel
+hi:Simulationpanel rdf:type owl:Class ;
+                   rdfs:subClassOf hi:Task .
+
+
+###  https://w3id.org/hi-ontology#Study
+hi:Study rdf:type owl:Class ;
+         rdfs:subClassOf hi:Experiment .
+
+
+###  https://w3id.org/hi-ontology#Syntheticbiology
+hi:Syntheticbiology rdf:type owl:Class ;
+                    rdfs:subClassOf hi:Theory .
+
+
+###  https://w3id.org/hi-ontology#Task
+hi:Task rdf:type owl:Class ;
+        rdfs:subClassOf [ rdf:type owl:Restriction ;
+                          owl:onProperty hi:requiresCapability ;
+                          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                          owl:onClass hi:Capability
+                        ] ;
+        rdfs:comment "A unit of purposeful activity executed by an agent toward achieving a goal."@en ;
+        rdfs:label "Task"@en .
+
+
+###  https://w3id.org/hi-ontology#TaskExecution
+hi:TaskExecution rdf:type owl:Class ;
+                 rdfs:comment "The realization or performance of a specific task by an agent using a method."@en ;
+                 rdfs:seeAlso <https://schema.org/Action> .
+
+
+###  https://w3id.org/hi-ontology#TeammateType
+hi:TeammateType rdf:type owl:Class ;
+                rdfs:subClassOf <https://www.wikidata.org/wiki/Q1122506> ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty hi:requires ;
+                                  owl:someValuesFrom skos:Concept
+                                ] .
+
+
+###  https://w3id.org/hi-ontology#Teamperformance
+hi:Teamperformance rdf:type owl:Class ;
+                   rdfs:subClassOf hi:Evaluation .
+
+
+###  https://w3id.org/hi-ontology#Theory
+hi:Theory rdf:type owl:Class .
+
+
+###  https://w3id.org/hi-ontology#Transparency
+hi:Transparency rdf:type owl:Class ;
+                rdfs:subClassOf hi:Capability ;
+                rdfs:label "Transparency"@en .
+
+
+###  https://w3id.org/hi-ontology#Treatmentplanning
+hi:Treatmentplanning rdf:type owl:Class ;
+                     rdfs:subClassOf hi:Task .
+
+
+###  https://w3id.org/hi-ontology#Trust
+hi:Trust rdf:type owl:Class ;
+         owl:equivalentClass [ rdf:type owl:Restriction ;
+                               owl:onProperty hi:isBasedOn ;
+                               owl:someValuesFrom hi:HumanIntervention
+                             ] ;
+         rdfs:subClassOf skos:Concept .
+
+
+###  https://w3id.org/hi-ontology#TrustAdaptableAgent
+hi:TrustAdaptableAgent rdf:type owl:Class ;
+                       rdfs:subClassOf hi:ArtificialAgent ,
+                                       hi:AutonomousAgent ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hi:adaptsTo ;
+                                         owl:someValuesFrom hi:Trust
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty hi:proposes ;
+                                         owl:someValuesFrom hi:AdHocTeamworkFramework
+                                       ] .
+
+
+###  https://w3id.org/hi-ontology#TrustPredictionModel
+hi:TrustPredictionModel rdf:type owl:Class ;
+                        rdfs:subClassOf <https://www.wikidata.org/wiki/Q1122506> .
+
+
+###  https://w3id.org/hi-ontology#Trustassessment
+hi:Trustassessment rdf:type owl:Class ;
+                   rdfs:subClassOf hi:Evaluation ;
+                   rdfs:label "TrustAssessment"@en .
+
+
+###  https://w3id.org/hi-ontology#Trustcalibration
+hi:Trustcalibration rdf:type owl:Class ;
+                    rdfs:subClassOf hi:Evaluation ;
+                    rdfs:label "TrustCalibration"@en .
+
+
+###  https://w3id.org/hi-ontology#TypeBasedMethod
+hi:TypeBasedMethod rdf:type owl:Class ;
+                   rdfs:subClassOf <https://www.wikidata.org/wiki/Q2695280> ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty hi:isPartOf ;
+                                     owl:someValuesFrom hi:AdHocTeamworkFramework
+                                   ] .
+
+
+###  https://w3id.org/hi-ontology#UnderstandingOfEvent
+hi:UnderstandingOfEvent rdf:type owl:Class ;
+                        rdfs:subClassOf hi:Event .
+
+
+###  https://w3id.org/hi-ontology#UseCase
+hi:UseCase rdf:type owl:Class ;
+           rdfs:comment "A structured situation describing a specific hybrid intelligence scenario (previously 'Scenario')."@en .
+
+
+###  https://w3id.org/hi-ontology#Webinterface
+hi:Webinterface rdf:type owl:Class ;
+                rdfs:subClassOf skos:Concept .
+
+
+###  https://w3id.org/hi-ontology#Xai
+hi:Xai rdf:type owl:Class ;
+       rdfs:subClassOf hi:Task .
+
+
+###  https://w3id.org/hi-ontology#ZeroshotcoTprompting
+hi:ZeroshotcoTprompting rdf:type owl:Class ;
+                        rdfs:subClassOf hi:Chainofthoughtprompting .
+
+
+###  https://w3id.org/hi-ontology#Zeroshotprompting
+hi:Zeroshotprompting rdf:type owl:Class ;
+                     rdfs:subClassOf hi:PromptEngineering ;
+                     rdfs:label "ZeroShotPrompting"@en .
+
+
+###  https://www.wikidata.org/wiki/Q1122506
+<https://www.wikidata.org/wiki/Q1122506> rdf:type owl:Class ;
+                                         rdfs:label "Model"@en .
+
+
+###  https://www.wikidata.org/wiki/Q2695280
+<https://www.wikidata.org/wiki/Q2695280> rdf:type owl:Class ;
+                                         rdfs:label "Method"@en .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://w3id.org/hi-ontology#AHTAlgorithm
+hi:AHTAlgorithm rdf:type owl:NamedIndividual ,
+                         hi:ATPOAlgorithm ;
+                hi:uses hi:BehavioralBiometricsDataset .
+
+
+###  https://w3id.org/hi-ontology#Agentpolicy
+hi:Agentpolicy rdf:type owl:NamedIndividual ,
+                        hi:Policy ;
+               hi:uses :AHTAlgorithmAgent .
+
+
+###  https://w3id.org/hi-ontology#BehavioralBiometricsDataset
+hi:BehavioralBiometricsDataset rdf:type owl:NamedIndividual ,
+                                        hi:BiometricDataset ;
+                               hi:uses hi:Eegmodalities ,
+                                       hi:Imu ,
+                                       hi:Radar ;
+                               hi:hasNumberOfParticipants 54 ;
+                               rdfs:comment "Dataset containing behavioral biometric measurements"@en ;
+                               rdfs:seeAlso "https://www.w3.org/ns/dcat#Dataset" .
+
+
+###  https://w3id.org/hi-ontology#Dqnmodel
+hi:Dqnmodel rdf:type owl:NamedIndividual ,
+                     hi:ReinforcementLearningModel ;
+            hi:implementedIn hi:Agentpolicy ;
+            rdfs:comment "Deep Q-Network model for reinforcement learning"@en .
+
+
+###  https://w3id.org/hi-ontology#Eegmodalities
+hi:Eegmodalities rdf:type owl:NamedIndividual ,
+                          hi:BiometricSensor ;
+                 rdfs:comment "Electroencephalography sensing modalities for brain activity measurement"@en ;
+                 rdfs:label "EegModalities"@en .
+
+
+###  https://w3id.org/hi-ontology#GameAction
+hi:GameAction rdf:type owl:NamedIndividual ,
+                       hi:GamePlayBehaviour .
+
+
+###  https://w3id.org/hi-ontology#GameLayout
+hi:GameLayout rdf:type owl:NamedIndividual ,
+                       hi:GamePlayBehaviour .
+
+
+###  https://w3id.org/hi-ontology#GameScore
+hi:GameScore rdf:type owl:NamedIndividual ,
+                      hi:GamePlayBehaviour .
+
+
+###  https://w3id.org/hi-ontology#Imu
+hi:Imu rdf:type owl:NamedIndividual ,
+                hi:MotionSensor ;
+       rdfs:comment "Inertial Measurement Unit for motion and orientation sensing"@en .
+
+
+###  https://w3id.org/hi-ontology#Mementosdataset
+hi:Mementosdataset rdf:type owl:NamedIndividual ,
+                            hi:BenchMarkDataset ;
+                   hi:appliedTo hi:MemoryCoConstrcutionPilotStudy ;
+                   hi:usedForTraining :MemoryCoConstructionAgent ;
+                   rdfs:comment "Dataset containing mementos or memory-related information"@en .
+
+
+###  https://w3id.org/hi-ontology#MemoryCoConstrcutionPilotStudy
+hi:MemoryCoConstrcutionPilotStudy rdf:type owl:NamedIndividual ,
+                                           hi:Experiment ;
+                                  hi:hasNumberOfParticipants 81 ;
+                                  rdfs:comment "Pilot study investigating memory co-construction processes"@en .
+
+
+###  https://w3id.org/hi-ontology#Radar
+hi:Radar rdf:type owl:NamedIndividual ,
+                  hi:RemoteSensor ;
+         hi:usedBy hi:BehavioralBiometricsDataset ;
+         rdfs:comment "Radar sensor for remote detection and ranging"@en ;
+         rdfs:label "Radar"@en .
+
+
+###  https://w3id.org/hi-ontology#SharpGradientExplainer
+hi:SharpGradientExplainer rdf:type owl:NamedIndividual ;
+                          hi:appliedTo hi:BehavioralBiometricsDataset .
+
+
+###  https://w3id.org/hi-ontology#TeammateType
+hi:TeammateType rdf:type owl:NamedIndividual ,
+                         <https://www.wikidata.org/wiki/Q2695280> ;
+                hi:requires hi:Agentpolicy .
+
+
+###  https://w3id.org/hi-ontology#TrustAdaptableAgent
+hi:TrustAdaptableAgent rdf:type owl:NamedIndividual ,
+                                hi:TrustAdaptableAgent ;
+                       hi:adaptsTo hi:GameAction ,
+                                   hi:GameLayout ,
+                                   hi:GameScore .
+
+
+###  https://w3id.org/hi-ontology/grade10#AHTAlgorithmAgent
+:AHTAlgorithmAgent rdf:type owl:NamedIndividual ,
+                            hi:ArtificialAgent ;
+                   hi:hasCapability :TrustAssessment .
+
+
+###  https://w3id.org/hi-ontology/grade10#AdHocTeamingScenario
+:AdHocTeamingScenario rdf:type owl:NamedIndividual ,
+                               hi:UseCase ;
+                      hi:hasHITeam :HumanRobotTeam .
+
+
+###  https://w3id.org/hi-ontology/grade10#AdaptiveTeaming
+:AdaptiveTeaming rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#Adaptivity
+:Adaptivity rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#AnnotationError
+:AnnotationError rdf:type owl:NamedIndividual ,
+                          hi:Annotationerror ;
+                 hi:defines :CategoryBoundariesError ;
+                 :occursIn :BrainAgePredictorSystem ,
+                           :ClinicalNeurologyContext .
+
+
+###  https://w3id.org/hi-ontology/grade10#BioInspiredFluidClass
+:BioInspiredFluidClass rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#BiomemeticRobotics
+:BiomemeticRobotics rdf:type owl:NamedIndividual ;
+                    hi:hasCapabilityConcept :BioInspiredFluidClass ,
+                                            :BloodTransporterClass ;
+                    hi:usedBy :BiomimeticRobotsCaseStudy .
+
+
+###  https://w3id.org/hi-ontology/grade10#BiomimeticRobotsCaseStudy
+:BiomimeticRobotsCaseStudy rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#BlocksWorldContext
+:BlocksWorldContext rdf:type owl:NamedIndividual ,
+                             hi:Context .
+
+
+###  https://w3id.org/hi-ontology/grade10#BloodTransporterClass
+:BloodTransporterClass rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#BrainAgeGap
+:BrainAgeGap rdf:type owl:NamedIndividual ,
+                      hi:ClinicalBiomarker ;
+             hi:usedBy :BrainAgePredictorScenario ,
+                       :BrainAgePredictorSystem .
+
+
+###  https://w3id.org/hi-ontology/grade10#BrainAgePredictor
+:BrainAgePredictor rdf:type owl:NamedIndividual ;
+                   hi:evaluatedBy :ClinicalApplicabilityInNeurology ;
+                   hi:usedBy :BrainAgePredictorScenario ,
+                             :BrainAgePredictorSystem ;
+                   hi:uses :DeepNeuralNetwork ,
+                           :XAI .
+
+
+###  https://w3id.org/hi-ontology/grade10#BrainAgePredictorScenario
+:BrainAgePredictorScenario rdf:type owl:NamedIndividual ;
+                           hi:evaluatedBy :ClinicalApplicabilityInNeurology ;
+                           hi:hasHITeam :NeurologyTeam .
+
+
+###  https://w3id.org/hi-ontology/grade10#BrainAgePredictorSystem
+:BrainAgePredictorSystem rdf:type owl:NamedIndividual ,
+                                  hi:ArtificialAgent ;
+                         hi:hasCapability :DeepLearning ,
+                                          :XAI .
+
+
+###  https://w3id.org/hi-ontology/grade10#CERTTTestbed
+:CERTTTestbed rdf:type owl:NamedIndividual ;
+              hi:realizedBy :ThreeMemberTeam .
+
+
+###  https://w3id.org/hi-ontology/grade10#CategoryBoundariesError
+:CategoryBoundariesError rdf:type owl:NamedIndividual ;
+                         :occursIn :NeurosymbolicFramework .
+
+
+###  https://w3id.org/hi-ontology/grade10#ClinicalApplicabilityInNeurology
+:ClinicalApplicabilityInNeurology rdf:type owl:NamedIndividual ;
+                                  hi:hasCapabilityConcept :XAI .
+
+
+###  https://w3id.org/hi-ontology/grade10#ClinicalNeurologyContext
+:ClinicalNeurologyContext rdf:type owl:NamedIndividual ,
+                                   hi:Context ;
+                          hi:evaluatedBy :BrainAgePredictor .
+
+
+###  https://w3id.org/hi-ontology/grade10#ClinicalTrust
+:ClinicalTrust rdf:type owl:NamedIndividual ,
+                        hi:Trust .
+
+
+###  https://w3id.org/hi-ontology/grade10#DLReasoner
+:DLReasoner rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#DeepLearning
+:DeepLearning rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#DeepNeuralNetwork
+:DeepNeuralNetwork rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#DescriptionLogic
+:DescriptionLogic rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#DialogueStrategy
+:DialogueStrategy rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#FeatureAttribution
+:FeatureAttribution rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#FormativeEvaluationBrainAge
+:FormativeEvaluationBrainAge rdf:type owl:NamedIndividual ,
+                                      hi:Evaluation ;
+                             hi:measures :ClinicalApplicabilityInNeurology .
+
+
+###  https://w3id.org/hi-ontology/grade10#HallucinationError
+:HallucinationError rdf:type owl:NamedIndividual ;
+                    :occursIn :BrainAgePredictorSystem .
+
+
+###  https://w3id.org/hi-ontology/grade10#HermiTReasoner
+:HermiTReasoner rdf:type owl:NamedIndividual ;
+                hi:measures :Safety .
+
+
+###  https://w3id.org/hi-ontology/grade10#HumanRobotTeam
+:HumanRobotTeam rdf:type owl:NamedIndividual ,
+                         hi:HITeam ;
+                hi:hasMember :Operator ;
+                hi:operatesInContext :BlocksWorldContext .
+
+
+###  https://w3id.org/hi-ontology/grade10#MIXTestbed
+:MIXTestbed rdf:type owl:NamedIndividual ,
+                     hi:Hybridintelligence ;
+            hi:realizedBy :RoboLeader .
+
+
+###  https://w3id.org/hi-ontology/grade10#MemoryCoConstructionAgent
+:MemoryCoConstructionAgent rdf:type owl:NamedIndividual ;
+                           hi:hasCapability :Adaptivity ;
+                           hi:requires :Adaptivity ,
+                                       :DialogueStrategy ,
+                                       :OwnMemoryStore .
+
+
+###  https://w3id.org/hi-ontology/grade10#NeurologyResident
+:NeurologyResident rdf:type owl:NamedIndividual ,
+                            hi:HumanAgent .
+
+
+###  https://w3id.org/hi-ontology/grade10#NeurologyTeam
+:NeurologyTeam rdf:type owl:NamedIndividual ,
+                        hi:HITeam ;
+               hi:hasMember :NeurologyResident ;
+               hi:operatesInContext :ClinicalNeurologyContext ;
+               hi:uses :BrainAgePredictorSystem .
+
+
+###  https://w3id.org/hi-ontology/grade10#NeurosymbolicFramework
+:NeurosymbolicFramework rdf:type owl:NamedIndividual ;
+                        hi:appliedTo :BiomemeticRobotics ;
+                        hi:implementedIn :OwlReady2 ,
+                                         :Protege ;
+                        hi:requires :DLReasoner ,
+                                    :DescriptionLogic .
+
+
+###  https://w3id.org/hi-ontology/grade10#OntologyBasedRiskAssessmentSystem
+:OntologyBasedRiskAssessmentSystem rdf:type owl:NamedIndividual ;
+                                   hi:implementedIn :HermiTReasoner ,
+                                                    :OwlReady2 ,
+                                                    :Protege ;
+                                   hi:measures :Safety ,
+                                               :Usability .
+
+
+###  https://w3id.org/hi-ontology/grade10#Operator
+:Operator rdf:type owl:NamedIndividual ,
+                   hi:HumanAgent .
+
+
+###  https://w3id.org/hi-ontology/grade10#OwlReady2
+:OwlReady2 rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#OwnMemoryStore
+:OwnMemoryStore rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#Protege
+:Protege rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#RoboLeader
+:RoboLeader rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#RobotClass
+:RobotClass rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#SHAP
+:SHAP rdf:type owl:NamedIndividual ,
+               hi:Xai ;
+      hi:measures :FeatureAttribution .
+
+
+###  https://w3id.org/hi-ontology/grade10#Safety
+:Safety rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#TeamPerformance
+:TeamPerformance rdf:type owl:NamedIndividual ;
+                 hi:hasInfluenceOn :ThreeMemberTeam .
+
+
+###  https://w3id.org/hi-ontology/grade10#ThreeMemberTeam
+:ThreeMemberTeam rdf:type owl:NamedIndividual ,
+                          hi:Hybridintelligenceteams .
+
+
+###  https://w3id.org/hi-ontology/grade10#TrustAssessment
+:TrustAssessment rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#TrustAssessmentStudy
+:TrustAssessmentStudy rdf:type owl:NamedIndividual ;
+                      hi:evaluatedBy hi:BehavioralBiometricsDataset ;
+                      hi:hasEvaluationConcept :TrustAssessment ;
+                      hi:measures :TrustLevel ;
+                      hi:requires hi:TrustAdaptableAgent .
+
+
+###  https://w3id.org/hi-ontology/grade10#TrustCalibration
+:TrustCalibration rdf:type owl:NamedIndividual ,
+                           hi:Evaluation ;
+                  hi:improves :TeamPerformance .
+
+
+###  https://w3id.org/hi-ontology/grade10#TrustLevel
+:TrustLevel rdf:type owl:NamedIndividual ,
+                     hi:Trust ;
+            hi:hasInfluenceOn :TrustAssessment .
+
+
+###  https://w3id.org/hi-ontology/grade10#Usability
+:Usability rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/hi-ontology/grade10#XAI
+:XAI rdf:type owl:NamedIndividual ,
+              hi:Xai ;
+     hi:improves :ClinicalNeurologyContext ,
+                 :ClinicalTrust .
+
+
+[ rdf:type schema:Organization ;
+  schema:name "Knowledge in AI (KAI) Group - Vrije Universiteit Amsterdam"
+] .
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
